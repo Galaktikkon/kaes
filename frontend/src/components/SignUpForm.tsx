@@ -14,7 +14,7 @@ function SignUpForm() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [re_password, setRePassword] = useState("");
+  const [repeat_password, setRepeatPassword] = useState("");
 
   const handleSignUp = async () => {
     const res = await fetch(
@@ -25,14 +25,12 @@ function SignUpForm() {
           username,
           email,
           password,
-          re_password,
+          repeat_password,
         }),
         headers: { "Content-Type": "application/json" },
       }
     );
-    console.log("🚀 ~ handleSignUp ~ res:", res);
     const user = await res.json();
-    console.log("🚀 ~ handleSignUp ~ user:", user);
 
     // If no error and we have user data, return it
     if (res.ok && user) {
@@ -74,7 +72,7 @@ function SignUpForm() {
           <FormLabel>Password</FormLabel>
           <Input
             type="password"
-            placeholder="Twoje hasło"
+            placeholder="your password"
             onChange={(e) => setPassword(e.target.value)}
             required
           />
@@ -84,8 +82,8 @@ function SignUpForm() {
           <FormLabel>Re-enter password</FormLabel>
           <Input
             type="password"
-            placeholder="Potwierdź swoje hasło"
-            onChange={(e) => setRePassword(e.target.value)}
+            placeholder="re-enter your password"
+            onChange={(e) => setRepeatPassword(e.target.value)}
             required
           />
         </FormControl>
@@ -98,7 +96,7 @@ function SignUpForm() {
             username.length === 0 &&
             email.length === 0 &&
             password.length === 0 &&
-            re_password.length === 0
+            repeat_password.length === 0
           }
         >
           Sign-up
