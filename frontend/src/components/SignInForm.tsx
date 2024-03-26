@@ -6,17 +6,20 @@ import {
   Button,
   VStack,
   Flex,
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
 } from "@chakra-ui/react";
-import axiosInstance from "..//..//lib/axiosConfig";
 
-import { useRouter } from "next/router";
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState } from "react";
+import { signIn, useSession } from "next-auth/react";
 
 function SignInForm() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const session = useSession();
+
+  const handleSignIn = () => {
+    signIn("credentials", { username, password, redirect: false });
+  };
+
   return (
     <>
       <Flex
@@ -28,15 +31,25 @@ function SignInForm() {
         <VStack spacing="4" align="stretch" maxW="md" m="auto">
           <FormControl id="username">
             <FormLabel>Username</FormLabel>
-            <Input type="text" placeholder="Your username" required />
+            <Input
+              type="text"
+              placeholder="Your username"
+              required
+              onChange={(e) => setUsername(e.target.value)}
+            />
           </FormControl>
 
           <FormControl id="password">
             <FormLabel>Password</FormLabel>
-            <Input type="password" placeholder="Your password" required />
+            <Input
+              type="password"
+              placeholder="Your password"
+              required
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </FormControl>
 
-          <Button colorScheme="teal" type="submit">
+          <Button colorScheme="teal" onClick={handleSignIn}>
             Sign-in
           </Button>
         </VStack>
