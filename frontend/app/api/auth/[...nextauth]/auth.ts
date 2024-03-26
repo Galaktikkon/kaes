@@ -2,6 +2,7 @@ import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions: NextAuthOptions = {
+  secret: process.env.AUTH_SECRET,
   providers: [
     CredentialsProvider({
       // The name to display on the sign in form (e.g. 'Sign in with...')
@@ -38,6 +39,7 @@ export const authOptions: NextAuthOptions = {
 
         // If no error and we have user data, return it
         if (res.ok && user) {
+          console.log("🚀 ~ authorize ~ user:", user);
           return user;
         }
         // Return null if user data could not be retrieved
