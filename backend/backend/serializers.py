@@ -53,3 +53,59 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
+
+class ExtendedChordSerializer(serializers.Serializer):
+
+    def __validate_pitch(self, pitch: str, type: str, tones: list[str]):
+        if len(pitch) < 2 or len(pitch) > 3:
+            raise serializers.ValidationError({type: "incorrect pitch format"})
+        if pitch[:len(pitch)-1] not in tones:
+            raise serializers.ValidationError({type: "incorrect pitch name"})
+        if int(pitch[-1]) not in range(0, 9):
+            raise serializers.ValidationError(
+                {type: "octave range is out of bounds"})
+
+    def validate(self, attrs):
+
+        tones = {'C': 0, 'C#': 1, 'D': 2, 'D#': 3, 'E': 4, 'F': 5,
+                 'F#': 6, 'G': 7, 'G#': 8, 'A': 9, 'A#': 10, 'B': 11}
+
+        extended_chords = {"D7": 10, "D7_3": 8, "D7_5": 9, "D7_7": 9}
+
+        pitch_range_low = attrs["pitch_range_low"]
+        pitch_range_high = attrs["pitch_range_high"]
+        extended_chord_types = attrs["extended_chord_types"]
+
+        self.__validate_pitch(
+            pitch_range_low, "pitch_range_low", list(tones.keys())
+        )
+
+        self.__validate_pitch(
+            pitch_range_high, "pitch_range_high", list(tones.keys())
+        )
+
+        if int(pitch_range_low[-1]) > int(pitch_range_high[-1]):
+            raise serializers.ValidationError("lower pitch > higher pitch")
+
+        if len(extended_chord_types) < 1:
+            raise serializers.ValidationError(
+                {"chord_types": "not enough chords to draw"})
+
+        if any(item not in list(extended_chords.keys()) for item in extended_chord_types):
+
+            raise serializers.ValidationError(
+                {"chord_types": "incorrect chord format"}
+            )
+
+        octaves = int(pitch_range_high[-1]) - int(pitch_range_low[-1])
+        for extended_chord in extended_chord_types:
+            if octaves*12 - tones[pitch_range_low[:len(pitch_range_low)-1]] + tones[pitch_range_high[:len(pitch_range_high)-1]] - extended_chords[extended_chord] < 0:
+                raise serializers.ValidationError(
+                    f'cannot draw {extended_chord} chord from this pitch range'
+                )
+        return attrs
+
+    pitch_range_low = serializers.CharField(required=True,)
+    pitch_range_high = serializers.CharField(required=True,)
+    extended_chord_types = serializers.ListField(required=True,)
