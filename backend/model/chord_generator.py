@@ -15,6 +15,6 @@ class ChordGenerator(ExerciseGenerator):
             case _:
                 out = self.get_sequence(
                     self.SEMITONES[self.pitch_high], self.SEMITONES[self.pitch_low], [3, 4])
-                out["ans"] = "m"
+                out["ans"] = "minor"
 
                 return out
