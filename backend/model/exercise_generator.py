@@ -38,7 +38,7 @@ class ExerciseGenerator:
         ptr = root
         for i, interval in enumerate(intervals):
 
-            octave_no = octave_no+1 if ptr+interval > 11 else octave_no
+            octave_no = octave_no+1 if ptr % 12 + interval > 11 else octave_no
             ptr += interval
             sequence[self.__COMPONENTS[i+2]
                      ] = self.SEMITONES[(ptr) % 12] + str(octave_no)

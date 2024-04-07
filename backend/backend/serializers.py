@@ -103,7 +103,7 @@ class ChordSerializer(serializers.Serializer):
         for chord in chord_types:
             if octaves*12 - tones[pitch_range_low[:len(pitch_range_low)-1]] + tones[pitch_range_high[:len(pitch_range_high)-1]] - chords[chord] < 0:
                 raise serializers.ValidationError(
-                    f'cannot draw {chord} from this pitch range'
+                    f'cannot draw {chord} chord from this pitch range'
                 )
         return attrs
 
