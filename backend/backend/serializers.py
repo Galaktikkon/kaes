@@ -53,3 +53,9 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
+
+class ChordSerializer(serializers.Serializer):
+    pitch_range_low = serializers.CharField(required=True,)
+    pitch_range_high = serializers.CharField(required=True,)
+    chord_types = serializers.ListField(required=True,)
