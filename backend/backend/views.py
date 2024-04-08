@@ -38,9 +38,7 @@ class IntervalView(APIView):
         serializer_class = IntervalSerializer(data=request.data)
         if serializer_class.is_valid():
 
-            generator = IntervalGenerator(serializer_class.data)
-
             # first, second then another request or first, second, answear and logic at FE?
-            return Response(generator.draw(), status=status.HTTP_200_OK)
+            return Response(IntervalGenerator(serializer_class.data).draw(), status=status.HTTP_200_OK)
 
         return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
