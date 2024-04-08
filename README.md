@@ -10,7 +10,7 @@ tech: **Next.js** (ma wbudowany router i łatwy jest do ogarniecia), **Chakra-UI
 
 * [X] ~~*panel do logowania/rejestracji*~~ [2024-03-27]
 * [ ] panel do konfiguracji zadan (wybor cwiczenia, intstrumentu, dlugosci itp.)
-* [ ]  glowny pasek do nawigacji (wylogowanie, link do profilu uzytkownika)
+* [ ] glowny pasek do nawigacji (wylogowanie, link do profilu uzytkownika)
 * [ ] panel statystyk uzytkownika
 * [ ] interfejs gry (wybor odpowiedzi, biezace statystyki sesji)
   * [ ] interfejs dla interwalow
