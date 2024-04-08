@@ -10,12 +10,12 @@ tech: **Next.js** (ma wbudowany router i łatwy jest do ogarniecia), **Chakra-UI
 
 * [X] ~~*panel do logowania/rejestracji*~~ [2024-03-27]
 * [ ] panel do konfiguracji zadan (wybor cwiczenia, intstrumentu, dlugosci itp.)
-* [ ] glowny pasek do nawigacji (wylogowanie, link do profilu uzytkownika)
+* [X] ~~*glowny pasek do nawigacji (wylogowanie, link do profilu uzytkownika)*~~ [2024-04-08]
 * [ ] panel statystyk uzytkownika
 * [ ] interfejs gry (wybor odpowiedzi, biezace statystyki sesji)
-  * [ ] interfejs dla interwalow
-  * [ ] interfejs dla trojdzwiekow
-  * [ ] interfejs dla czterodzwiekow
+  * [X] ~~*interfejs dla interwalow*~~ [2024-04-08]
+  * [X] ~~*interfejs dla trojdzwiekow*~~ [2024-04-08]
+  * [X] ~~*interfejs dla czterodzwiekow*~~ [2024-04-08]
   * [ ] przycisk start/stop/skip
 
 ## BACKEND
@@ -24,15 +24,15 @@ tech: **DJANGO**
 
 * [ ] generowanie przykladow
   * [ ]  endpoint zwracajacy zadanie w zalezniosci od interwalu
-    * [ ]  jeden typ (np. pryma)
-    * [ ]  moze przyjac wiele typow
+    * [X] ~~*jeden typ (np. pryma)*~~ [2024-04-07]
+    * [X] ~~*moze przyjac wiele typow*~~ [2024-04-07]
     * [ ] opcje generowania przykladow (harmonicznie, melodycznie, w gore w dol, kombo) dla interwalow
   * [ ] endpoint zwracajacy zadanie w zalezniosci od trojdzwieku
-    * [ ] jeden typ (np. molowy)
+    * [X] ~~*jeden typ (np. molowy)*~~ [2024-04-07]
     * [ ] moze przyjac wiele typow
     * [ ] opcje generowania przykladow (harmonicznie, melodycznie, w gore w dol, kombo) dla trojdzwiekow
   * [ ] endpoint zwracajacy zadanie w zalezniosci od trojdzwieku czterodzwieku
-    * [ ] jeden typ (np. D7)
+    * [X] ~~*jeden typ (np. D7)*~~ [2024-04-07]
     * [ ]  moze przyjac wiele typow
     * [ ]  opcje generowania przykladow (harmonicznie, melodycznie, w gore w dol, kombo) dla czterodzwiekow
 * [ ] zapisywanie statystyk uzytkownika do bazy
