@@ -7,6 +7,7 @@ import {
   Button,
   VStack,
   Flex,
+  Link,
 } from "@chakra-ui/react";
 import { useState } from "react";
 
@@ -101,6 +102,7 @@ function SignUpForm() {
         >
           Sign-up
         </Button>
+        <Link href={"/signin"}>Sign-in</Link>
       </VStack>
     </Flex>
   );

@@ -8,8 +8,9 @@ import {
   Flex,
 } from "@chakra-ui/react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { signIn, useSession } from "next-auth/react";
+import Link from "next/link";
 
 function SignInForm() {
   const [username, setUsername] = useState("");
@@ -20,6 +21,11 @@ function SignInForm() {
     signIn("credentials", { username, password, redirect: false });
   };
 
+  useEffect(() => {
+    if (session.data?.expires) {
+      window.location.href = "/";
+    }
+  }, [session]);
   return (
     <>
       <Flex
@@ -52,6 +58,7 @@ function SignInForm() {
           <Button colorScheme="teal" onClick={handleSignIn}>
             Sign-in
           </Button>
+          <Link href={"/signup"}>Sign-up</Link>
         </VStack>
       </Flex>
     </>
