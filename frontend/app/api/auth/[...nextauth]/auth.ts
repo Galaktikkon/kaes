@@ -35,14 +35,14 @@ export const authOptions: NextAuthOptions = {
           }
         );
 
-        const user = await res.json();
+        const data = await res.json();
 
         // If no error and we have user data, return it
-        if (res.ok && user) {
-          return user;
+        if (res.ok && data) {
+          return data;
         }
-        // Return null if user data could not be retrieved
-        return null;
+        // Throw error if user data could not be retrieved
+        throw Error(data.detail);
       },
     }),
   ],

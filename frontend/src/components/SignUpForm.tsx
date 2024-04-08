@@ -7,6 +7,8 @@ import {
   Button,
   VStack,
   Flex,
+  Link,
+  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 
@@ -15,6 +17,7 @@ function SignUpForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeat_password, setRepeatPassword] = useState("");
+  const toast = useToast();
 
   const handleSignUp = async () => {
     const res = await fetch(
@@ -30,14 +33,30 @@ function SignUpForm() {
         headers: { "Content-Type": "application/json" },
       }
     );
-    const user = await res.json();
+    const data = await res.json();
 
     // If no error and we have user data, return it
-    if (res.ok && user) {
-      return user;
+    if (res.ok && data) {
+      toast({
+        title: "Succesfully signed up",
+        position: "top",
+        description: "We'll redirect you shortly.",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+        onCloseComplete: () => {
+          window.location.href = "/signin";
+        },
+      });
+    } else {
+      toast({
+        title: "error siging up",
+        position: "top",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
-    // Return null if user data could not be retrieved
-    return null;
   };
 
   return (
@@ -52,7 +71,7 @@ function SignUpForm() {
           <FormLabel>Username</FormLabel>
           <Input
             type="text"
-            placeholder="yourusername"
+            placeholder="your user name"
             onChange={(e) => setUsername(e.target.value)}
             required
           />
@@ -101,6 +120,7 @@ function SignUpForm() {
         >
           Sign-up
         </Button>
+        <Link href={"/signin"}>Sign-in</Link>
       </VStack>
     </Flex>
   );
