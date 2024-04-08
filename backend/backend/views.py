@@ -43,9 +43,7 @@ class ChordView(APIView):
         serializer_class = ChordSerializer(data=request.data)
         if serializer_class.is_valid():
 
-            generator = ChordGenerator(serializer_class.data)
-
-            return Response(generator.draw(), status=status.HTTP_200_OK)
+            return Response(ChordGenerator(serializer_class.data).draw(), status=status.HTTP_200_OK)
 
         return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
 
