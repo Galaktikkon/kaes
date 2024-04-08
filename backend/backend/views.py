@@ -1,7 +1,11 @@
 from django.contrib.auth.models import Group, User
 from rest_framework import permissions, viewsets
 from rest_framework import generics
-from .serializers import RegisterSerializer, GroupSerializer, UserSerializer
+from rest_framework.views import APIView
+from .serializers import RegisterSerializer, GroupSerializer, UserSerializer, IntervalSerializer
+from rest_framework.response import Response
+from rest_framework import status
+from model.interval_generator import IntervalGenerator
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -26,3 +30,15 @@ class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (permissions.AllowAny,)
     serializer_class = RegisterSerializer
+
+
+class IntervalView(APIView):
+
+    def post(self, request, format=None):
+        serializer_class = IntervalSerializer(data=request.data)
+        if serializer_class.is_valid():
+
+            # first, second then another request or first, second, answear and logic at FE?
+            return Response(IntervalGenerator(serializer_class.data).draw(), status=status.HTTP_200_OK)
+
+        return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
