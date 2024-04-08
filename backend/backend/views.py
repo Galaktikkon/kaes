@@ -11,6 +11,11 @@ from .serializers import RegisterSerializer, GroupSerializer, UserSerializer, Ch
 from rest_framework.response import Response
 from rest_framework import status
 from model.chord_generator import ChordGenerator
+from rest_framework.views import APIView
+from .serializers import RegisterSerializer, GroupSerializer, UserSerializer, ExtendedChordSerializer
+from rest_framework.response import Response
+from rest_framework import status
+from model.extended_chord_generator import ExtendedChordGenerator
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -56,5 +61,18 @@ class IntervalView(APIView):
 
             # first, second then another request or first, second, answear and logic at FE?
             return Response(IntervalGenerator(serializer_class.data).draw(), status=status.HTTP_200_OK)
+
+        return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ExtendedChordView(APIView):
+
+    def post(self, request, format=None):
+        serializer_class = ExtendedChordSerializer(data=request.data)
+        if serializer_class.is_valid():
+
+            generator = ExtendedChordGenerator(serializer_class.data)
+
+            return Response(generator.draw(), status=status.HTTP_200_OK)
 
         return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
