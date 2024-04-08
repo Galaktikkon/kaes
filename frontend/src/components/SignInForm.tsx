@@ -6,6 +6,7 @@ import {
   Button,
   VStack,
   Flex,
+  useToast,
 } from "@chakra-ui/react";
 
 import { useEffect, useState } from "react";
@@ -16,14 +17,38 @@ function SignInForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const session = useSession();
-
-  const handleSignIn = () => {
-    signIn("credentials", { username, password, redirect: false });
+  const toast = useToast();
+  const handleSignIn = async () => {
+    const res = await signIn("credentials", {
+      username,
+      password,
+      redirect: false,
+    });
+    if (res?.error) {
+      toast({
+        title: res.error,
+        position: "top",
+        // description: "We've created your account for you.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
 
   useEffect(() => {
     if (session.data?.expires) {
-      window.location.href = "/";
+      toast({
+        title: "Succesfully logged in",
+        position: "top",
+        description: "We'll redirect you shortly.",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+        onCloseComplete: () => {
+          window.location.href = "/";
+        },
+      });
     }
   }, [session]);
   return (
