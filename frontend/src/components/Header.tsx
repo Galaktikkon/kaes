@@ -4,17 +4,14 @@ import {
   Box,
   Flex,
   Avatar,
-  Text,
   Button,
   Menu,
   MenuButton,
   MenuList,
-  MenuItem,
   MenuDivider,
   useDisclosure,
   useColorModeValue,
   Stack,
-  useColorMode,
   Center,
   VStack,
 } from "@chakra-ui/react";
@@ -54,7 +51,7 @@ export default function Header() {
     <>
       <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-          <Box>MusicMaster</Box>
+          <Box>ear training</Box>
 
           <Flex alignItems={"center"}>
             <Stack direction={"row"} spacing={7}>

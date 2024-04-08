@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { Providers } from "./providers";
 
 export const metadata = {
-  title: "KaEs",
+  title: "perfect ear",
   description: "",
 };
 
