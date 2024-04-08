@@ -150,7 +150,7 @@ class IntervalSerializer(serializers.Serializer):
             raise serializers.ValidationError(
                 {"interval_types": "not enough intervals to draw"})
 
-        if not any(item in list(intervals.keys()) for item in interval_types):
+        if any(item not in list(intervals.keys()) for item in interval_types):
 
             raise serializers.ValidationError(
                 {"interval_types": "incorrect interval format"}
