@@ -6,7 +6,7 @@ class ChordGenerator(ExerciseGenerator):
 
     def __init__(self, data):
         super().__init__(data)
-        self.chord_types = data['chord_types']
+        self.chord_types = data['sequence_types']
 
     def draw(self):
 

@@ -6,7 +6,7 @@ class ExtendedChordGenerator(ExerciseGenerator):
 
     def __init__(self, data):
         super().__init__(data)
-        self.extended_chord_types = data['extended_chord_types']
+        self.extended_chord_types = data['sequence_types']
 
     def draw(self):
 
