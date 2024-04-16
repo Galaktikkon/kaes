@@ -9,7 +9,7 @@ class IntervalGenerator(ExerciseGenerator):
 
     def __init__(self, data):
         super().__init__(data)
-        self.interval_types = data['interval_types']
+        self.interval_types = data['sequence_types']
 
     def draw(self):
 

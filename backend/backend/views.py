@@ -2,19 +2,11 @@ from django.contrib.auth.models import Group, User
 from rest_framework import permissions, viewsets
 from rest_framework import generics
 from rest_framework.views import APIView
-from .serializers import RegisterSerializer, GroupSerializer, UserSerializer, IntervalSerializer
 from rest_framework.response import Response
 from rest_framework import status
+from .serializers import UserSerializer, RegisterSerializer, GroupSerializer, SequenceSerializer
 from model.interval_generator import IntervalGenerator
-from rest_framework.views import APIView
-from .serializers import RegisterSerializer, GroupSerializer, UserSerializer, ChordSerializer
-from rest_framework.response import Response
-from rest_framework import status
 from model.chord_generator import ChordGenerator
-from rest_framework.views import APIView
-from .serializers import RegisterSerializer, GroupSerializer, UserSerializer, ExtendedChordSerializer
-from rest_framework.response import Response
-from rest_framework import status
 from model.extended_chord_generator import ExtendedChordGenerator
 
 
@@ -45,9 +37,8 @@ class RegisterView(generics.CreateAPIView):
 class ChordView(APIView):
 
     def post(self, request, format=None):
-        serializer_class = ChordSerializer(data=request.data)
+        serializer_class = SequenceSerializer(data=request.data)
         if serializer_class.is_valid():
-            # ?
             return Response(ChordGenerator(serializer_class.data).draw(), status=status.HTTP_200_OK)
 
         return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -56,7 +47,7 @@ class ChordView(APIView):
 class IntervalView(APIView):
 
     def post(self, request, format=None):
-        serializer_class = IntervalSerializer(data=request.data)
+        serializer_class = SequenceSerializer(data=request.data)
         if serializer_class.is_valid():
 
             # first, second then another request or first, second, answear and logic at FE?
@@ -68,7 +59,7 @@ class IntervalView(APIView):
 class ExtendedChordView(APIView):
 
     def post(self, request, format=None):
-        serializer_class = ExtendedChordSerializer(data=request.data)
+        serializer_class = SequenceSerializer(data=request.data)
         if serializer_class.is_valid():
 
             generator = ExtendedChordGenerator(serializer_class.data)
