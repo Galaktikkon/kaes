@@ -39,6 +39,7 @@ class ChordView(APIView):
     def post(self, request, format=None):
         serializer_class = SequenceSerializer(data=request.data)
         if serializer_class.is_valid():
+
             return Response(ChordGenerator(serializer_class.data).draw(), status=status.HTTP_200_OK)
 
         return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -50,7 +51,6 @@ class IntervalView(APIView):
         serializer_class = SequenceSerializer(data=request.data)
         if serializer_class.is_valid():
 
-            # first, second then another request or first, second, answear and logic at FE?
             return Response(IntervalGenerator(serializer_class.data).draw(), status=status.HTTP_200_OK)
 
         return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -62,8 +62,6 @@ class ExtendedChordView(APIView):
         serializer_class = SequenceSerializer(data=request.data)
         if serializer_class.is_valid():
 
-            generator = ExtendedChordGenerator(serializer_class.data)
-
-            return Response(generator.draw(), status=status.HTTP_200_OK)
+            return Response(ExtendedChordGenerator(serializer_class.data).draw(), status=status.HTTP_200_OK)
 
         return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
