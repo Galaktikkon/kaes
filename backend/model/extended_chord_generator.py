@@ -1,20 +1,16 @@
 from random import choice
-from model.exercise_generator import ExerciseGenerator
+from model.sequence_generator import SequenceGenerator
 
 
-class ExtendedChordGenerator(ExerciseGenerator):
+class ExtendedChordGenerator(SequenceGenerator):
+
+    __EXTENDED_CHORDS = {
+        "D7": [4, 3, 3], "D7_3": [3, 3, 2], "D7_5": [3, 2, 4], "D7_7": [2, 4, 3]
+    }
 
     def __init__(self, data):
         super().__init__(data)
-        self.extended_chord_types = data['sequence_types']
+        self.sequences = data['sequence_types']
 
     def draw(self):
-
-        match choice(self.extended_chord_types):
-            # match-case for all types, right now sticking only to D7
-            case _:
-                out = self.get_sequence(
-                    self.SEMITONES[self.pitch_high], self.SEMITONES[self.pitch_low], [4, 3, 3])
-                out["ans"] = "D7"
-
-                return out
+        return super().draw(self.sequences, self.__EXTENDED_CHORDS)

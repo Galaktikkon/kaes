@@ -65,13 +65,13 @@ class SequenceSerializer(serializers.Serializer):
 
     __SEQUENCE_TYPES = {
         "interval": {
-            "U": 0, "m2": 1, "M2": 2, "m3": 3, "M3": 4, "P4": 5,
-            "TT": 6, "P5": 7, "m6": 8, "M6": 9, "m7": 10, "M7": 11, "P8": 12
+            "U": [0], "m2": [1], "M2": [2], "m3": [3], "M3": [4], "P4": [5],
+            "TT": [6], "P5": [7], "m6": [8], "M6": [9], "m7": [10], "M7": [11], "P8": [12]
         }, "triad": {
-            "minor": 7, "Major": 7, "diminished": 6, "augmented": 8, "minor_6": 7,
-            "Major_6": 7, "diminished_6": 6, "minor_46": 7, "Major_46": 7, "diminished_46": 6,
+            "minor": [3, 4], "Major": [4, 3], "diminished": [3, 3], "augmented": [4, 4], "minor_6": [4, 5],
+            "Major_6": [3, 5], "diminished_6": [3, 6], "minor_46": [5, 3], "Major_46": [5, 4], "diminished_46": [6, 3],
         }, "extended_chord": {
-            "D7": 10, "D7_3": 8, "D7_5": 9, "D7_7": 9
+            "D7": [4, 3, 3], "D7_3": [3, 3, 2], "D7_5": [3, 2, 4], "D7_7": [2, 4, 3]
         },
     }
 
@@ -80,10 +80,10 @@ class SequenceSerializer(serializers.Serializer):
         errors = {}
 
         if len(sequence_types) < 1:
-            errors.update({sequence_types: "not enough sequences to draw"})
+            errors.update({"sequence_types": "not enough sequences to draw"})
 
         if any(item not in available_sequences for item in sequence_types):
-            errors.update({sequence_types: "incorrect sequence format"})
+            errors.update({"sequence_types": "incorrect sequence format"})
 
         if errors:
             raise serializers.ValidationError(errors)
@@ -109,7 +109,7 @@ class SequenceSerializer(serializers.Serializer):
         pitch_name_low = pitch_range_low[:len(pitch_range_low)-1]
 
         for sequence in sequence_types:
-            if semitones - self.__TONES[pitch_name_low] + self.__TONES[pitch_name_high] - self.__SEQUENCE_TYPES[type][sequence] < 0:
+            if semitones - self.__TONES[pitch_name_low] + self.__TONES[pitch_name_high] - sum(self.__SEQUENCE_TYPES[type][sequence]) < 0:
                 raise serializers.ValidationError(
                     f'cannot draw {sequence} chord from this pitch range'
                 )
