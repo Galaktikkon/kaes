@@ -8,8 +8,6 @@ const SevenChordsButtons: React.FC = () => {
     "Minor Dominant Seventh",
     "Half Diminished Seventh",
     "Diminished Seventh",
-    "Major Seventh",
-    "Minor Major Seventh",
   ];
 
   // List of inversions

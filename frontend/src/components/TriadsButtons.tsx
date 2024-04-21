@@ -1,35 +1,47 @@
-import { Button, Stack } from "@chakra-ui/react";
-import { useState } from "react";
+import { Button, Flex, HStack, Spacer, Stack } from "@chakra-ui/react";
+import TriadsSettings from "./settings/TriadsSettings";
+import { createContext, useState } from "react";
 
-const TriadsButtons: React.FC = () => {
-  // List of triad types
-  const triadTypes: string[] = ["Major", "Minor", "Augmented", "Diminished"];
+const ButtonContext = createContext({});
 
-  // List of inversions
-  const inversions: string[] = [
-    "Root Position",
-    "First Inversion",
-    "Second Inversion",
-  ];
+const TriadsButtons = () => {
+  const [triadTypes, setTriadTypes] = useState({
+    "Root Position": ["Major", "Minor", "Augmented", "Diminished"],
+  });
+
+  const setSelectedTypes = (groupName: string, types: string[]) => {
+    setTriadTypes((prevSelectedTypes) => ({
+      ...prevSelectedTypes,
+      [groupName]: types,
+    }));
+  };
 
   return (
-    <Stack spacing={2}>
-      {triadTypes.map((triadType: string, index: number) => (
-        <Stack key={index} spacing={2}>
-          {triadType === "Augmented" ? (
-            <Button variant="outline" colorScheme="gray">
-              {triadType}
-            </Button>
-          ) : (
-            inversions.map((inversion: string, idx: number) => (
-              <Button key={idx} variant={"outline"} colorScheme={"gray"}>
-                {triadType} - {inversion}
-              </Button>
-            ))
-          )}
-        </Stack>
-      ))}
-    </Stack>
+    <ButtonContext.Provider value={{ triadTypes, setSelectedTypes }}>
+      <HStack>
+        <Flex>
+          <Stack spacing={2}>
+            {Object.keys(triadTypes).map((triadType, index) => (
+              <Stack key={index} spacing={2}>
+                {triadTypes[triadType as keyof typeof triadTypes].map(
+                  (type, idx) => (
+                    <Button key={idx} variant={"outline"} colorScheme={"gray"}>
+                      {triadType === "Root Position"
+                        ? type
+                        : `${type} - ${triadType}`}
+                    </Button>
+                  )
+                )}
+              </Stack>
+            ))}
+          </Stack>
+          <Spacer />
+          <Flex>
+            <TriadsSettings setSelectedTypes={setSelectedTypes} />
+          </Flex>
+        </Flex>
+      </HStack>
+    </ButtonContext.Provider>
   );
 };
 

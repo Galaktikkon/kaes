@@ -12,7 +12,7 @@ import Header from "@/src/components/Header";
 import { useState } from "react";
 import IntervalsButtons from "@/src/components/IntervalsButtons";
 import TriadsButtons from "@/src/components/TriadsButtons";
-import SevenChordsButtons from "@/src/components/SevenChordsButtons";
+import SevenChordsButtons from "@/src/components/ExtendedChordsButtons";
 
 export default function Home() {
   const [isMenu, setIsMenu] = useState(true);
