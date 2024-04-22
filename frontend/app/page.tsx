@@ -97,6 +97,8 @@ export default function Home() {
             padding={10}
             justifyContent={"center"}
             alignContent={"center"}
+            position={"fixed"}
+            bottom={"50px"}
           >
             <Button
               onClick={() => {

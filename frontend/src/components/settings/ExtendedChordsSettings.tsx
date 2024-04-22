@@ -48,13 +48,16 @@ const ExtendedChordsSettings = ({ setSelectedTypes }: TriadsSettingsProps) => {
         colorScheme="teal"
         onClick={onOpen}
         icon={<SettingsIcon boxSize={6} />}
+        position="fixed"
+        top="20px"
+        right="20px"
       >
         Open
       </Button>
       <Drawer isOpen={isOpen} placement="right" onClose={onClose} size={"lg"}>
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerCloseButton />
+          <DrawerCloseButton top="20px" right="40px" />
           <DrawerHeader>Extended Chords Settings</DrawerHeader>
 
           <DrawerBody>

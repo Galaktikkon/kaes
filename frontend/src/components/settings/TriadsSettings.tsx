@@ -50,13 +50,16 @@ const TriadsSettings = ({ setSelectedTypes }: TriadsSettingsProps) => {
         colorScheme="teal"
         onClick={onOpen}
         icon={<SettingsIcon boxSize={6} />}
+        position="fixed"
+        top="20px"
+        right="20px"
       >
         Open
       </Button>
       <Drawer isOpen={isOpen} placement="right" onClose={onClose} size={"md"}>
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerCloseButton />
+          <DrawerCloseButton top="20px" right="40px" />
           <DrawerHeader>Triads Settings</DrawerHeader>
 
           <DrawerBody>
