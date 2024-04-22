@@ -7,6 +7,7 @@ import {
   Container,
   Grid,
   GridItem,
+  HStack,
 } from "@chakra-ui/react";
 import Header from "@/src/components/Header";
 import { useState } from "react";
@@ -92,18 +93,24 @@ export default function Home() {
           )}
         </Grid>
         {(isIntervals || isTriads || isSevenChords) && (
-          <Box position={"absolute"} bottom={"5%"}>
-            <CloseButton
-              size={"lg"}
-              colorScheme="telegram"
+          <HStack
+            padding={10}
+            justifyContent={"center"}
+            alignContent={"center"}
+          >
+            <Button
               onClick={() => {
                 setIsMenu(true);
                 setIsIntervals(false);
                 setIsTriads(false);
                 setIsSevenChords(false);
               }}
-            ></CloseButton>
-          </Box>
+            >
+              EXIT
+            </Button>
+            <Button>SKIP</Button>
+            <Button>AGAIN</Button>
+          </HStack>
         )}
       </Container>
     </>
