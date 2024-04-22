@@ -1,63 +1,85 @@
-import { Button, Grid, GridItem, Stack } from "@chakra-ui/react";
-import React from "react";
+import { Button, Flex, Spacer, Stack } from "@chakra-ui/react";
+import { createContext, useEffect, useState } from "react";
+import ExtendedChordsSettings from "./settings/ExtendedChordsSettings";
 
-const SevenChordsButtons: React.FC = () => {
-  // List of seven chord types
-  const sevenChordTypes: string[] = [
-    "Dominant Seventh",
-    "Minor Dominant Seventh",
-    "Half Diminished Seventh",
-    "Diminished Seventh",
-  ];
+const ButtonContext = createContext({});
 
-  // List of inversions
-  const inversions: string[] = [
-    "Root Position",
-    "First Inversion",
-    "Second Inversion",
-    "Third Inversion",
-  ];
+const ExtendedChordsButtons = () => {
+  const [triadTypes, setTriadTypes] = useState({
+    "Root Position": [
+      "Dominant Seven",
+      "Minor Dominant Seven",
+      "Half Diminished Seventh",
+      "Fully Diminished Seventh",
+    ],
+  });
+
+  const setSelectedTypes = (groupName: string, types: string[]) => {
+    setTriadTypes((prevSelectedTypes) => ({
+      ...prevSelectedTypes,
+      [groupName]: types,
+    }));
+  };
+
+  const [isOverflow, setIsOverflow] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const height = window.innerHeight;
+      const buttonHeight =
+        document.getElementById("buttons")?.offsetHeight || 0;
+      setIsOverflow(buttonHeight > height / 2);
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, [triadTypes]);
+
+  const renderButtons = (triadType: string, types: string[]) => {
+    return (
+      <Stack key={triadType} spacing={2}>
+        {types.map((type, idx) => (
+          <Button key={idx} variant={"outline"} colorScheme={"gray"}>
+            {triadType === "Root Position" ? type : `${type} - ${triadType}`}
+          </Button>
+        ))}
+      </Stack>
+    );
+  };
 
   return (
-    <Grid templateColumns="1fr 1fr" gap={4}>
-      <GridItem colSpan={1}>
-        <Stack spacing={2}>
-          {sevenChordTypes
-            .slice(0, Math.ceil(sevenChordTypes.length / 2))
-            .map((chordType: string, index: number) => (
-              <Stack key={index} spacing={2}>
-                <Button variant="outline" colorScheme="purple">
-                  {chordType}
-                </Button>
-                {inversions.map((inversion: string, idx: number) => (
-                  <Button key={idx} variant="outline" colorScheme="purple">
-                    {chordType} - {inversion}
-                  </Button>
-                ))}
-              </Stack>
-            ))}
-        </Stack>
-      </GridItem>
-      <GridItem colSpan={1}>
-        <Stack spacing={2}>
-          {sevenChordTypes
-            .slice(Math.ceil(sevenChordTypes.length / 2))
-            .map((chordType: string, index: number) => (
-              <Stack key={index} spacing={2}>
-                <Button variant="outline" colorScheme="purple">
-                  {chordType}
-                </Button>
-                {inversions.map((inversion: string, idx: number) => (
-                  <Button key={idx} variant="outline" colorScheme="purple">
-                    {chordType} - {inversion}
-                  </Button>
-                ))}
-              </Stack>
-            ))}
-        </Stack>
-      </GridItem>
-    </Grid>
+    <ButtonContext.Provider value={{ triadTypes, setSelectedTypes }}>
+      <Flex id="buttons">
+        {isOverflow ? (
+          <>
+            <Stack spacing={2}>
+              {Object.entries(triadTypes).map(
+                ([triadType, types], index) =>
+                  index % 2 === 0 && renderButtons(triadType, types)
+              )}
+            </Stack>
+            <Spacer />
+            <Stack spacing={2}>
+              {Object.entries(triadTypes).map(
+                ([triadType, types], index) =>
+                  index % 2 === 1 && renderButtons(triadType, types)
+              )}
+            </Stack>
+          </>
+        ) : (
+          <Stack spacing={2}>
+            {Object.entries(triadTypes).map(([triadType, types]) =>
+              renderButtons(triadType, types)
+            )}
+          </Stack>
+        )}
+        <Spacer />
+        <ExtendedChordsSettings setSelectedTypes={setSelectedTypes} />
+      </Flex>
+    </ButtonContext.Provider>
   );
 };
 
-export default SevenChordsButtons;
+export default ExtendedChordsButtons;

@@ -7,36 +7,34 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
-  HStack,
   IconButton,
-  Stack,
-  VStack,
   useDisclosure,
 } from "@chakra-ui/react";
-import { Checkbox, CheckboxGroup } from "@chakra-ui/react";
-import { useContext, useState } from "react";
-import SettingsCheckboxGroup from "./SettingsCheckboxGroup";
+
 import AdvancedSettingsDropdown from "./AdvancedSettingsDropdown";
 import TypeCheckboxes from "./TypeCheckboxes";
-import types from "next/types";
 import React from "react";
 import { SettingsIcon } from "@chakra-ui/icons";
-import ButtonContext from "../TriadsButtons";
 
 interface TriadsSettingsProps {
   setSelectedTypes: Function;
 }
 
-const TriadsSettings = ({ setSelectedTypes }: TriadsSettingsProps) => {
+const ExtendedChordsSettings = ({ setSelectedTypes }: TriadsSettingsProps) => {
   // List of triad types
-  const triadTypes: string[] = ["Major", "Minor", "Diminished", "Augmented"];
+  const ExtendedChordsTypes: string[] = [
+    "Dominant Seven",
+    "Minor Dominant Seven",
+    "Half Diminished Seventh",
+    "Fully Diminished Seventh",
+  ];
   const inversions: string[] = [
     "Root Position",
     "First Inversion",
     "Second Inversion",
+    "Third Inversion",
   ];
 
-  //   const { updateSelectedTypes } = useContext(ButtonContext);
   const updateSelectedTypes = (groupName: string, types: string[]) => {
     setSelectedTypes(groupName, types);
   };
@@ -53,15 +51,15 @@ const TriadsSettings = ({ setSelectedTypes }: TriadsSettingsProps) => {
       >
         Open
       </Button>
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose} size={"md"}>
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose} size={"lg"}>
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Triads Settings</DrawerHeader>
+          <DrawerHeader>Extended Chords Settings</DrawerHeader>
 
           <DrawerBody>
             <TypeCheckboxes
-              types={triadTypes}
+              types={ExtendedChordsTypes}
               inversions={inversions}
               selectedTypesChange={updateSelectedTypes}
             />
@@ -75,4 +73,4 @@ const TriadsSettings = ({ setSelectedTypes }: TriadsSettingsProps) => {
   );
 };
 
-export default TriadsSettings;
+export default ExtendedChordsSettings;

@@ -1,4 +1,4 @@
-import { Button, HStack, Stack, VStack } from "@chakra-ui/react";
+import { Box, Button, HStack, Stack, VStack } from "@chakra-ui/react";
 import { Checkbox, CheckboxGroup } from "@chakra-ui/react";
 import { useState } from "react";
 import SettingsCheckboxGroup from "./SettingsCheckboxGroup";
@@ -6,12 +6,12 @@ import SettingsCheckboxGroup from "./SettingsCheckboxGroup";
 interface TypeCheckboxesProps {
   types: string[];
   inversions: string[];
-  updateSelectedTypes: Function;
+  selectedTypesChange: Function;
 }
 
 const TypeCheckboxes = ({
   types,
-  updateSelectedTypes,
+  selectedTypesChange,
   inversions,
 }: TypeCheckboxesProps) => {
   const [checkedItems, setCheckedItems] = useState([true, false, false]);
@@ -24,25 +24,26 @@ const TypeCheckboxes = ({
     setCheckedItems(newCheckedItems);
   };
 
-  const selectedTypesChange = (groupName: string, types: string[]) => {
-    updateSelectedTypes(groupName, types);
-  };
-
   return (
     <>
-      <VStack>
+      <VStack alignContent={"center"}>
         <Checkbox
           isChecked={allChecked}
           isIndeterminate={isIndeterminate}
           onChange={() =>
             allChecked
-              ? setCheckedItems([false, false, false])
-              : setCheckedItems([true, true, true])
+              ? setCheckedItems(Array(types.length).fill(false))
+              : setCheckedItems(Array(types.length).fill(true))
           }
         >
           All types
         </Checkbox>
-        <HStack spacing={3} alignItems="flex-start">
+        <HStack
+          spacing={4}
+          alignContent={"center"}
+          justifyContent={"center"}
+          flexWrap="wrap"
+        >
           {inversions.map((inversion: string, index: number) => (
             <SettingsCheckboxGroup
               key={index}
