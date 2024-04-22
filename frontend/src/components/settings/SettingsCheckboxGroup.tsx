@@ -77,6 +77,7 @@ const SettingsCheckboxGroup = ({
           <Stack pl={6} mt={1} spacing={1}>
             {types.map((type, index) => (
               <Checkbox
+                id="subTypeCheckbox"
                 whiteSpace={"nowrap"}
                 isChecked={checkedItems[index]}
                 onChange={handleCheckboxChange(index)}
