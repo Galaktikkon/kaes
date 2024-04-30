@@ -1,59 +1,47 @@
+"use client";
+
 import { Button, Flex, HStack, Spacer, Stack } from "@chakra-ui/react";
 import IntervalsSettings from "./settings/IntervalsSettings";
-import { createContext, useState } from "react";
+import { useGameSettingsContext } from "./context/GameContext";
+import { useEffect, useState } from "react";
 
-const ButtonContext = createContext({});
+const defaultIntervals = {
+  "Simple Intervals": [
+    "Unison",
+    "Minor Second",
+    "Major Second",
+    "Minor Third",
+    "Major Third",
+    "Perfect Fourth",
+    "Tritone",
+  ],
+};
 
 const IntervalsButtons = () => {
-  const [intervalTypes, setIntervalTypes] = useState({
-    "Simple Intervals": [
-      "Unison",
-      "Minor Second",
-      "Major Second",
-      "Minor Third",
-      "Major Third",
-      "Perfect Fourth",
-      "Tritone",
-      "Perfect Fifth",
-      "Minor Sixth",
-      "Major Sixth",
-      "Minor Seventh",
-      "Major Seventh",
-      "Octave",
-    ],
-  });
-
-  const setSelectedTypes = (groupName: string, types: string[]) => {
-    setIntervalTypes((prevSelectedTypes) => ({
-      ...prevSelectedTypes,
-      [groupName]: types,
-    }));
-  };
+  const { game } = useGameSettingsContext();
 
   return (
-    <ButtonContext.Provider value={{ intervalTypes, setSelectedTypes }}>
-      <HStack>
-        <Flex>
-          <Stack spacing={2}>
-            {Object.keys(intervalTypes).map((triadType, index) => (
+    <HStack>
+      <Flex>
+        <Stack spacing={2}>
+          {Object.entries(game.exercise.sequenceTypes).map(
+            ([subType, types], index) => (
               <Stack key={index} spacing={2}>
-                {intervalTypes[triadType as keyof typeof intervalTypes].map(
-                  (type, idx) => (
-                    <Button key={idx} variant={"outline"} colorScheme={"gray"}>
-                      {type}
-                    </Button>
-                  )
-                )}
+                {types.map((type: string, idx: number) => (
+                  <Button key={idx} variant={"outline"} colorScheme={"gray"}>
+                    {type}
+                  </Button>
+                ))}
               </Stack>
-            ))}
-          </Stack>
-          <Spacer />
-          <Flex>
-            <IntervalsSettings setSelectedTypes={setSelectedTypes} />
-          </Flex>
+            )
+          )}
+        </Stack>
+        <Spacer />
+        <Flex>
+          <IntervalsSettings />
         </Flex>
-      </HStack>
-    </ButtonContext.Provider>
+      </Flex>
+    </HStack>
   );
 };
 

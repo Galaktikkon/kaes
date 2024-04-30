@@ -1,3 +1,4 @@
+"use client";
 import {
   Button,
   Drawer,
@@ -15,12 +16,7 @@ import TypeCheckboxes from "./TypeCheckboxes";
 import React from "react";
 import { SettingsIcon } from "@chakra-ui/icons";
 
-interface IntervalSettingsProps {
-  setSelectedTypes: Function;
-}
-
-const IntervalSettings = ({ setSelectedTypes }: IntervalSettingsProps) => {
-  // List of triad types
+const IntervalSettings = () => {
   const intervalTypes: string[] = [
     "Unison",
     "Minor Second",
@@ -36,12 +32,8 @@ const IntervalSettings = ({ setSelectedTypes }: IntervalSettingsProps) => {
     "Major Seventh",
     "Octave",
   ];
-  const inversions: string[] = ["Simple Intervals"];
 
-  //   const { updateSelectedTypes } = useContext(ButtonContext);
-  const updateSelectedTypes = (groupName: string, types: string[]) => {
-    setSelectedTypes(groupName, types);
-  };
+  const inversions: string[] = ["Simple Intervals"];
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -62,14 +54,11 @@ const IntervalSettings = ({ setSelectedTypes }: IntervalSettingsProps) => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton top="20px" right="40px" />
+
           <DrawerHeader>Intervals Settings</DrawerHeader>
 
           <DrawerBody>
-            <TypeCheckboxes
-              types={intervalTypes}
-              inversions={inversions}
-              selectedTypesChange={updateSelectedTypes}
-            />
+            <TypeCheckboxes types={intervalTypes} inversions={inversions} />
             <AdvancedSettingsDropdown />
           </DrawerBody>
 

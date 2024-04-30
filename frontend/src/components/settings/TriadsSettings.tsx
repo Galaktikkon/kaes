@@ -63,11 +63,7 @@ const TriadsSettings = ({ setSelectedTypes }: TriadsSettingsProps) => {
           <DrawerHeader>Triads Settings</DrawerHeader>
 
           <DrawerBody>
-            <TypeCheckboxes
-              types={triadTypes}
-              inversions={inversions}
-              selectedTypesChange={updateSelectedTypes}
-            />
+            <TypeCheckboxes types={triadTypes} inversions={inversions} />
             <AdvancedSettingsDropdown />
           </DrawerBody>
 

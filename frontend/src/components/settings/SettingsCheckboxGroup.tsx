@@ -1,14 +1,13 @@
+"use client";
 import { Checkbox, CheckboxGroup, Stack, VStack } from "@chakra-ui/react";
-import { all } from "axios";
-import { tree } from "next/dist/build/templates/app-page";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useGameSettingsContext } from "../context/GameContext";
 
 interface SettingsCheckboxGroupProps {
   groupName: string;
   types: string[];
   checkChildren: boolean;
   onCheckChildrenChange: Function;
-  selectedTypesChange: Function;
 }
 
 const SettingsCheckboxGroup = ({
@@ -16,7 +15,6 @@ const SettingsCheckboxGroup = ({
   types,
   checkChildren,
   onCheckChildrenChange,
-  selectedTypesChange,
 }: SettingsCheckboxGroupProps) => {
   const [checkedItems, setCheckedItems] = useState(
     Array(types.length).fill(false)
@@ -24,30 +22,35 @@ const SettingsCheckboxGroup = ({
   const allChecked = checkedItems.every(Boolean);
   const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
 
+  const { setSequenceTypes, game } = useGameSettingsContext();
+
   useEffect(() => {
     if (checkChildren) {
       setCheckedItems(Array(types.length).fill(true));
-      selectedTypesChange(groupName, types);
+      setSequenceTypes(groupName, types);
     } else {
       setCheckedItems(Array(types.length).fill(false));
-      selectedTypesChange(groupName, []);
+      setSequenceTypes(groupName, []);
     }
-  }, [checkChildren, types.length]);
+  }, [checkChildren]);
 
   const handleCheckboxChange =
     (index: number) => (e: { target: { checked: any } }) => {
       const newCheckedItems = [...checkedItems];
       newCheckedItems[index] = e.target.checked;
       setCheckedItems(newCheckedItems);
+
       if (newCheckedItems.every(Boolean)) {
         onCheckChildrenChange(true);
       } else if (!newCheckedItems.some(Boolean)) {
         onCheckChildrenChange(false);
       }
-      selectedTypesChange(
+
+      setSequenceTypes(
         groupName,
         types.filter((type, index) => Boolean(newCheckedItems[index]))
       );
+      console.log("🚀 ~ game.sequenceTypes:", game.exercise.sequenceTypes);
     };
 
   return (
@@ -66,9 +69,13 @@ const SettingsCheckboxGroup = ({
                 setCheckedItems(Array(types.length).fill(true));
                 onCheckChildrenChange(true);
               }
-              selectedTypesChange(
+              setSequenceTypes(
                 groupName,
                 types.filter((type, index) => Boolean(checkedItems[index]))
+              );
+              console.log(
+                "🚀 ~ game.sequenceTypes:",
+                game.exercise.sequenceTypes
               );
             }}
           >

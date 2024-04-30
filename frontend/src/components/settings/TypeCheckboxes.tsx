@@ -1,3 +1,4 @@
+"use client";
 import { Box, Button, HStack, Stack, VStack } from "@chakra-ui/react";
 import { Checkbox, CheckboxGroup } from "@chakra-ui/react";
 import { useState } from "react";
@@ -6,14 +7,9 @@ import SettingsCheckboxGroup from "./SettingsCheckboxGroup";
 interface TypeCheckboxesProps {
   types: string[];
   inversions: string[];
-  selectedTypesChange: Function;
 }
 
-const TypeCheckboxes = ({
-  types,
-  selectedTypesChange,
-  inversions,
-}: TypeCheckboxesProps) => {
+const TypeCheckboxes = ({ types, inversions }: TypeCheckboxesProps) => {
   const [checkedItems, setCheckedItems] = useState([true, false, false]);
   const allChecked = checkedItems.every(Boolean);
   const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
@@ -57,7 +53,6 @@ const TypeCheckboxes = ({
               onCheckChildrenChange={(value: boolean) =>
                 onCheckChildrenChange(index, value)
               }
-              selectedTypesChange={selectedTypesChange}
             />
           ))}
         </HStack>
