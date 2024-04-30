@@ -11,30 +11,22 @@ import {
   IconButton,
   useDisclosure,
 } from "@chakra-ui/react";
-import AdvancedSettingsDropdown from "./AdvancedSettingsDropdown";
-import TypeCheckboxes from "./TypeCheckboxes";
+import AdvancedSettingsDropdown from "./advancedSettings/AdvancedSettingsDropdown";
+import TypeCheckboxes from "./checkboxes/TypeCheckboxes";
 import React from "react";
 import { SettingsIcon } from "@chakra-ui/icons";
 
-const IntervalSettings = () => {
-  const intervalTypes: string[] = [
-    "Unison",
-    "Minor Second",
-    "Major Second",
-    "Minor Third",
-    "Major Third",
-    "Perfect Fourth",
-    "Tritone",
-    "Perfect Fifth",
-    "Minor Sixth",
-    "Major Sixth",
-    "Minor Seventh",
-    "Major Seventh",
-    "Octave",
-  ];
+interface SequenceTypesSettingsProps {
+  sequenceName: string;
+  sequenceTypes: string[];
+  groupTypes: string[];
+}
 
-  const inversions: string[] = ["Simple Intervals"];
-
+const SequenceTypesSettings = ({
+  sequenceName,
+  sequenceTypes,
+  groupTypes,
+}: SequenceTypesSettingsProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -55,10 +47,10 @@ const IntervalSettings = () => {
         <DrawerContent>
           <DrawerCloseButton top="20px" right="40px" />
 
-          <DrawerHeader>Intervals Settings</DrawerHeader>
+          <DrawerHeader>{sequenceName} Settings</DrawerHeader>
 
           <DrawerBody>
-            <TypeCheckboxes types={intervalTypes} inversions={inversions} />
+            <TypeCheckboxes types={sequenceTypes} groupTypes={groupTypes} />
             <AdvancedSettingsDropdown />
           </DrawerBody>
 
@@ -69,4 +61,4 @@ const IntervalSettings = () => {
   );
 };
 
-export default IntervalSettings;
+export default SequenceTypesSettings;

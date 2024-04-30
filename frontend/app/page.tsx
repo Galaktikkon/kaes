@@ -3,16 +3,29 @@
 import { Button, Container, Grid, GridItem, HStack } from "@chakra-ui/react";
 import Header from "@/src/components/Header";
 import { useState } from "react";
-import IntervalsButtons from "@/src/components/IntervalsButtons";
-import TriadsButtons from "@/src/components/TriadsButtons";
-import SevenChordsButtons from "@/src/components/ExtendedChordsButtons";
-import { GameSettingsWrapper } from "@/src/components/context/GameContext";
+import {
+  GameSettingsWrapper,
+  useGameSettingsContext,
+} from "@/src/components/context/GameContext";
+import GameButtons from "@/src/components/GameButtons";
+import {
+  EXTENDED_CHORDS_GROUP_NAMES,
+  EXTENDED_CHORDS_TYPES,
+  INTERVALS_DEFAULT,
+  INTERVAL_GROUP_NAMES,
+  INTERVAL_TYPES,
+  TRIAD_GROUP_NAMES,
+  TRIAD_TYPES,
+} from "./config";
+import { observer } from "mobx-react";
 
-export default function Home() {
+const Home = observer(() => {
   const [isMenu, setIsMenu] = useState(true);
   const [isIntervals, setIsIntervals] = useState(false);
   const [isTriads, setIsTriads] = useState(false);
   const [isSevenChords, setIsSevenChords] = useState(false);
+
+  const game = useGameSettingsContext();
 
   return (
     <GameSettingsWrapper>
@@ -25,9 +38,27 @@ export default function Home() {
             centerContent
             justifyContent={"center"}
           >
-            {isIntervals && <IntervalsButtons />}
-            {isTriads && <TriadsButtons />}
-            {isSevenChords && <SevenChordsButtons />}
+            {isIntervals && (
+              <GameButtons
+                sequenceName="Intervals"
+                sequenceTypes={INTERVAL_TYPES}
+                groupTypes={INTERVAL_GROUP_NAMES}
+              />
+            )}
+            {isTriads && (
+              <GameButtons
+                sequenceName="Triads"
+                sequenceTypes={TRIAD_TYPES}
+                groupTypes={TRIAD_GROUP_NAMES}
+              />
+            )}
+            {isSevenChords && (
+              <GameButtons
+                sequenceName="Extended Chords"
+                sequenceTypes={EXTENDED_CHORDS_TYPES}
+                groupTypes={EXTENDED_CHORDS_GROUP_NAMES}
+              />
+            )}
             <Grid templateColumns="repeat(3, 1fr)" gap={6}>
               {isMenu && (
                 <>
@@ -41,6 +72,11 @@ export default function Home() {
                     <Button
                       bgColor={"blueviolet"}
                       onClick={() => {
+                        game.setExercise(
+                          INTERVALS_DEFAULT.sequenceName,
+                          "Simple Intervals",
+                          INTERVALS_DEFAULT.sequenceTypes["Simple Intervals"]
+                        );
                         setIsIntervals(true);
                         setIsMenu(false);
                       }}
@@ -114,4 +150,6 @@ export default function Home() {
       }
     </GameSettingsWrapper>
   );
-}
+});
+
+export default Home;

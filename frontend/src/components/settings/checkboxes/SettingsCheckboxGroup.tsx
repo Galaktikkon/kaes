@@ -1,7 +1,7 @@
 "use client";
 import { Checkbox, CheckboxGroup, Stack, VStack } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
-import { useGameSettingsContext } from "../context/GameContext";
+import { useGameSettingsContext } from "../../context/GameContext";
 
 interface SettingsCheckboxGroupProps {
   groupName: string;
@@ -22,15 +22,15 @@ const SettingsCheckboxGroup = ({
   const allChecked = checkedItems.every(Boolean);
   const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
 
-  const { setSequenceTypes, game } = useGameSettingsContext();
+  const game = useGameSettingsContext();
 
   useEffect(() => {
     if (checkChildren) {
       setCheckedItems(Array(types.length).fill(true));
-      setSequenceTypes(groupName, types);
+      game.setExercise(game.exercise.sequenceName, groupName, types);
     } else {
       setCheckedItems(Array(types.length).fill(false));
-      setSequenceTypes(groupName, []);
+      game.setExercise(game.exercise.sequenceName, groupName, []);
     }
   }, [checkChildren]);
 
@@ -46,11 +46,11 @@ const SettingsCheckboxGroup = ({
         onCheckChildrenChange(false);
       }
 
-      setSequenceTypes(
+      game.setExercise(
+        game.exercise.sequenceName,
         groupName,
         types.filter((type, index) => Boolean(newCheckedItems[index]))
       );
-      console.log("🚀 ~ game.sequenceTypes:", game.exercise.sequenceTypes);
     };
 
   return (
@@ -69,13 +69,10 @@ const SettingsCheckboxGroup = ({
                 setCheckedItems(Array(types.length).fill(true));
                 onCheckChildrenChange(true);
               }
-              setSequenceTypes(
+              game.setExercise(
+                game.exercise.sequenceName,
                 groupName,
                 types.filter((type, index) => Boolean(checkedItems[index]))
-              );
-              console.log(
-                "🚀 ~ game.sequenceTypes:",
-                game.exercise.sequenceTypes
               );
             }}
           >
