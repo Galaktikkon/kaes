@@ -1,6 +1,7 @@
 "use client";
 
-import { makeAutoObservable } from "mobx";
+import { group } from "console";
+import { autorun, makeAutoObservable, runInAction } from "mobx";
 import { createContext, useContext } from "react";
 
 class Game {
@@ -33,12 +34,36 @@ class Game {
   }
 
   setExercise(exerciseName: string, groupName: string, newTypes: string[]) {
-    this.exercise.sequenceName = exerciseName;
-    this.exercise.sequenceTypes = {
-      ...this.exercise.sequenceTypes,
-      [groupName]: newTypes,
-    };
+    runInAction(() => {
+      this.exercise.sequenceName = exerciseName;
+      this.exercise.sequenceTypes = {
+        ...this.exercise.sequenceTypes,
+        [groupName]: newTypes,
+      };
+
+      console.log(
+        "🚀 SetExercise: ~ Game ~ runInAction ~ this.exercise.sequenceTypes:",
+        this.exercise.sequenceTypes
+      );
+    });
   }
+
+  setGroupNames(groupNames: string[]) {
+    runInAction(() => {
+      this.exercise.sequenceTypes = {};
+      for (const name of groupNames) {
+        this.exercise.sequenceTypes = {
+          ...this.exercise.sequenceTypes,
+          [name]: [],
+        };
+      }
+      console.log(
+        "🚀 SetGroupNames: ~ Game ~ runInAction ~ this.exercise.sequenceTypes :",
+        this.exercise.sequenceTypes
+      );
+    });
+  }
+
   setGameSettings(
     ...args: Partial<{
       noteDuration: number;
@@ -52,20 +77,24 @@ class Game {
   }
 }
 
-const GameSettingsContext = createContext(new Game());
+const GameSettings: Game = new Game();
 
-export function GameSettingsWrapper({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <GameSettingsContext.Provider value={new Game()}>
-      {children}
-    </GameSettingsContext.Provider>
-  );
-}
+export default GameSettings;
 
-export function useGameSettingsContext() {
-  return useContext(GameSettingsContext);
-}
+// const GameSettingsContext = createContext(new Game());
+
+// export function GameSettingsWrapper({
+//   children,
+// }: {
+//   children: React.ReactNode;
+// }) {
+//   return (
+//     <GameSettingsContext.Provider value={new Game()}>
+//       {children}
+//     </GameSettingsContext.Provider>
+//   );
+// }
+
+// export function useGameSettingsContext() {
+//   return useContext(GameSettingsContext);
+// }

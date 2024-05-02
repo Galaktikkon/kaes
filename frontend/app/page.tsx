@@ -3,21 +3,21 @@
 import { Button, Container, Grid, GridItem, HStack } from "@chakra-ui/react";
 import Header from "@/src/components/Header";
 import { useState } from "react";
-import {
-  GameSettingsWrapper,
-  useGameSettingsContext,
-} from "@/src/components/context/GameContext";
+import GameSettings from "@/src/components/context/GameContext";
 import GameButtons from "@/src/components/GameButtons";
 import {
+  EXTENDED_CHORDS_DEFAULT,
   EXTENDED_CHORDS_GROUP_NAMES,
   EXTENDED_CHORDS_TYPES,
   INTERVALS_DEFAULT,
   INTERVAL_GROUP_NAMES,
   INTERVAL_TYPES,
+  TRIAD_DEFAULT,
   TRIAD_GROUP_NAMES,
   TRIAD_TYPES,
 } from "./config";
 import { observer } from "mobx-react";
+import { runInAction } from "mobx";
 
 const Home = observer(() => {
   const [isMenu, setIsMenu] = useState(true);
@@ -25,130 +25,147 @@ const Home = observer(() => {
   const [isTriads, setIsTriads] = useState(false);
   const [isSevenChords, setIsSevenChords] = useState(false);
 
-  const game = useGameSettingsContext();
-
   return (
-    <GameSettingsWrapper>
-      {
-        <>
-          <Header />
-          <Container
-            size={"md"}
-            h={"100vh"}
-            centerContent
-            justifyContent={"center"}
-          >
-            {isIntervals && (
-              <GameButtons
-                sequenceName="Intervals"
-                sequenceTypes={INTERVAL_TYPES}
-                groupTypes={INTERVAL_GROUP_NAMES}
-              />
-            )}
-            {isTriads && (
-              <GameButtons
-                sequenceName="Triads"
-                sequenceTypes={TRIAD_TYPES}
-                groupTypes={TRIAD_GROUP_NAMES}
-              />
-            )}
-            {isSevenChords && (
-              <GameButtons
-                sequenceName="Extended Chords"
-                sequenceTypes={EXTENDED_CHORDS_TYPES}
-                groupTypes={EXTENDED_CHORDS_GROUP_NAMES}
-              />
-            )}
-            <Grid templateColumns="repeat(3, 1fr)" gap={6}>
-              {isMenu && (
-                <>
-                  <GridItem
-                    gridColumn={1}
-                    gridRow={1}
-                    placeItems={"center"}
-                    alignSelf={"center"}
-                    justifySelf={"center"}
-                  >
-                    <Button
-                      bgColor={"blueviolet"}
-                      onClick={() => {
-                        game.setExercise(
-                          INTERVALS_DEFAULT.sequenceName,
-                          "Simple Intervals",
-                          INTERVALS_DEFAULT.sequenceTypes["Simple Intervals"]
-                        );
-                        setIsIntervals(true);
-                        setIsMenu(false);
-                      }}
-                    >
-                      Intervals
-                    </Button>
-                  </GridItem>
-
-                  <GridItem
-                    gridColumn={2}
-                    gridRow={2}
-                    placeItems={"center"}
-                    alignSelf="center"
-                    justifySelf="center"
-                  >
-                    <Button
-                      bgColor={"green"}
-                      onClick={() => {
-                        setIsTriads(true);
-                        setIsMenu(false);
-                      }}
-                    >
-                      Triads
-                    </Button>
-                  </GridItem>
-
-                  <GridItem
-                    gridColumn={3}
-                    gridRow={3}
-                    placeItems={"center"}
-                    alignSelf="center"
-                    justifySelf="center"
-                  >
-                    <Button
-                      bgColor={"red"}
-                      wordBreak={"break-word"}
-                      onClick={() => {
-                        setIsSevenChords(true);
-                        setIsMenu(false);
-                      }}
-                    >
-                      Extended Chords
-                    </Button>
-                  </GridItem>
-                </>
-              )}
-            </Grid>
-            {(isIntervals || isTriads || isSevenChords) && (
-              <HStack
-                padding={10}
-                justifyContent={"center"}
-                alignContent={"center"}
-                marginTop={"20%"}
+    // <GameSettingsWrapper>
+    //   {
+    <>
+      <Header />
+      <Container
+        size={"md"}
+        h={"100vh"}
+        centerContent
+        justifyContent={"center"}
+      >
+        {isIntervals && (
+          <GameButtons
+            sequenceName="Intervals"
+            sequenceTypes={INTERVAL_TYPES}
+            groupTypes={INTERVAL_GROUP_NAMES}
+          />
+        )}
+        {isTriads && (
+          <GameButtons
+            sequenceName="Triads"
+            sequenceTypes={TRIAD_TYPES}
+            groupTypes={TRIAD_GROUP_NAMES}
+          />
+        )}
+        {isSevenChords && (
+          <GameButtons
+            sequenceName="Extended Chords"
+            sequenceTypes={EXTENDED_CHORDS_TYPES}
+            groupTypes={EXTENDED_CHORDS_GROUP_NAMES}
+          />
+        )}
+        <Grid templateColumns="repeat(3, 1fr)" gap={6}>
+          {isMenu && (
+            <>
+              <GridItem
+                gridColumn={1}
+                gridRow={1}
+                placeItems={"center"}
+                alignSelf={"center"}
+                justifySelf={"center"}
               >
                 <Button
+                  bgColor={"blueviolet"}
                   onClick={() => {
-                    setIsMenu(true);
-                    setIsIntervals(false);
-                    setIsTriads(false);
-                    setIsSevenChords(false);
+                    runInAction(() => {
+                      GameSettings.setGroupNames(INTERVAL_GROUP_NAMES);
+                      GameSettings.setExercise(
+                        INTERVALS_DEFAULT.sequenceName,
+                        "Simple Intervals",
+                        INTERVALS_DEFAULT.sequenceTypes["Simple Intervals"]
+                      );
+                      setIsIntervals(true);
+                      setIsMenu(false);
+                    });
                   }}
                 >
-                  EXIT
+                  Intervals
                 </Button>
-                <Button>SKIP</Button>
-                <Button>AGAIN</Button>
-              </HStack>
-            )}
-          </Container>
-        </>
-      }
-    </GameSettingsWrapper>
+              </GridItem>
+
+              <GridItem
+                gridColumn={2}
+                gridRow={2}
+                placeItems={"center"}
+                alignSelf="center"
+                justifySelf="center"
+              >
+                <Button
+                  bgColor={"green"}
+                  onClick={() => {
+                    runInAction(() => {
+                      GameSettings.setGroupNames(TRIAD_GROUP_NAMES);
+                      GameSettings.setExercise(
+                        TRIAD_DEFAULT.sequenceName,
+                        "Root Position",
+                        TRIAD_DEFAULT.sequenceTypes["Root Position"]
+                      );
+                      setIsTriads(true);
+                      setIsMenu(false);
+                    });
+                  }}
+                >
+                  Triads
+                </Button>
+              </GridItem>
+
+              <GridItem
+                gridColumn={3}
+                gridRow={3}
+                placeItems={"center"}
+                alignSelf="center"
+                justifySelf="center"
+              >
+                <Button
+                  bgColor={"red"}
+                  whiteSpace={"nowrap"}
+                  onClick={() => {
+                    runInAction(() => {
+                      GameSettings.setGroupNames(EXTENDED_CHORDS_GROUP_NAMES);
+                      GameSettings.setExercise(
+                        EXTENDED_CHORDS_DEFAULT.sequenceName,
+                        "Root Position",
+                        EXTENDED_CHORDS_DEFAULT.sequenceTypes["Root Position"]
+                      );
+                      setIsSevenChords(true);
+                      setIsMenu(false);
+                    });
+                  }}
+                >
+                  Extended Chords
+                </Button>
+              </GridItem>
+            </>
+          )}
+        </Grid>
+        {(isIntervals || isTriads || isSevenChords) && (
+          <HStack
+            padding={10}
+            justifyContent={"center"}
+            alignContent={"center"}
+            marginTop={"20%"}
+          >
+            <Button
+              onClick={() => {
+                setIsMenu(true);
+                setIsIntervals(false);
+                setIsTriads(false);
+                setIsSevenChords(false);
+              }}
+            >
+              EXIT
+            </Button>
+            <Button>SKIP</Button>
+            <Button>AGAIN</Button>
+          </HStack>
+        )}
+      </Container>
+    </>
+    //   }
+    // </GameSettingsWrapper>
   );
 });
 

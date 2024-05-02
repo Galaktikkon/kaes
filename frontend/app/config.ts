@@ -12,7 +12,7 @@ const INTERVAL_TYPES: string[] = [
   "Minor Seventh",
   "Major Seventh",
   "Octave",
-];
+] as const;
 const INTERVAL_GROUP_NAMES: string[] = ["Simple Intervals"];
 
 const INTERVALS_DEFAULT = {
@@ -37,6 +37,13 @@ const TRIAD_GROUP_NAMES: string[] = [
   "Second Inversion",
 ];
 
+const TRIAD_DEFAULT = {
+  sequenceName: "Triads",
+  sequenceTypes: {
+    "Root Position": ["Major", "Minor", "Diminished", "Augmented"],
+  },
+};
+
 const EXTENDED_CHORDS_TYPES: string[] = [
   "Dominant Seven",
   "Minor Dominant Seven",
@@ -50,12 +57,26 @@ const EXTENDED_CHORDS_GROUP_NAMES: string[] = [
   "Third Inversion",
 ];
 
+const EXTENDED_CHORDS_DEFAULT = {
+  sequenceName: "Extended Chords",
+  sequenceTypes: {
+    "Root Position": [
+      "Dominant Seven",
+      "Minor Dominant Seven",
+      "Half Diminished Seventh",
+      "Fully Diminished Seventh",
+    ],
+  },
+};
+
 export {
   INTERVAL_TYPES,
   INTERVAL_GROUP_NAMES,
   INTERVALS_DEFAULT,
   TRIAD_TYPES,
   TRIAD_GROUP_NAMES,
+  TRIAD_DEFAULT,
   EXTENDED_CHORDS_TYPES,
   EXTENDED_CHORDS_GROUP_NAMES,
+  EXTENDED_CHORDS_DEFAULT,
 };

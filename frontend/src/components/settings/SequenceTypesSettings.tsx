@@ -11,8 +11,8 @@ import {
   IconButton,
   useDisclosure,
 } from "@chakra-ui/react";
-import AdvancedSettingsDropdown from "./advancedSettings/AdvancedSettingsDropdown";
-import TypeCheckboxes from "./checkboxes/TypeCheckboxes";
+import AdvancedSettingsDropdown from "./AdvancedSettings/AdvancedSettingsDropdown";
+import TypeCheckboxes from "./Checkboxes/TypeCheckboxes";
 import React from "react";
 import { SettingsIcon } from "@chakra-ui/icons";
 
