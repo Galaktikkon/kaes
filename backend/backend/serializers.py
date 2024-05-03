@@ -68,8 +68,8 @@ class SequenceSerializer(serializers.Serializer):
             "U": [0], "m2": [1], "M2": [2], "m3": [3], "M3": [4], "P4": [5],
             "TT": [6], "P5": [7], "m6": [8], "M6": [9], "m7": [10], "M7": [11], "P8": [12]
         }, "triad": {
-            "minor": [3, 4], "Major": [4, 3], "diminished": [3, 3], "augmented": [4, 4], "minor_6": [4, 5],
-            "Major_6": [3, 5], "diminished_6": [3, 6], "minor_46": [5, 3], "Major_46": [5, 4], "diminished_46": [6, 3],
+            "minor": [3, 4], "major": [4, 3], "diminished": [3, 3], "augmented": [4, 4], "minor_6": [4, 5],
+            "major_6": [3, 5], "diminished_6": [3, 6], "minor_46": [5, 3], "major_46": [5, 4], "diminished_46": [6, 3],
         }, "extended_chord": {
             "D7": [4, 3, 3], "D7_3": [3, 3, 2], "D7_5": [3, 2, 4], "D7_7": [2, 4, 3]
         },

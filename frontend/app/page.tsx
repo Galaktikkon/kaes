@@ -5,7 +5,7 @@ import { useState } from "react";
 import { observer } from "mobx-react";
 import { runInAction } from "mobx";
 import Header from "@/src/components/Header";
-import GameSettings from "@/src/components/context/GameContext";
+import GameSettings from "@/src/state/Game";
 import GameButtons from "@/src/components/GameButtons";
 import {
   SEVEN_CHORDS_DEFAULT,
@@ -37,22 +37,22 @@ const Home = observer(() => {
         {isIntervals && (
           <GameButtons
             exerciseName="Intervals"
-            availableSequenceTypes={INTERVAL_TYPES}
+            availableSequenceTypes={Object.keys(INTERVAL_TYPES)}
             availableGroupTypes={INTERVAL_GROUP_NAMES}
           />
         )}
         {isTriads && (
           <GameButtons
             exerciseName="Triads"
-            availableSequenceTypes={TRIAD_TYPES}
-            availableGroupTypes={TRIAD_GROUP_NAMES}
+            availableSequenceTypes={Object.keys(TRIAD_TYPES)}
+            availableGroupTypes={Object.keys(TRIAD_GROUP_NAMES)}
           />
         )}
         {isSevenChords && (
           <GameButtons
             exerciseName="SEVEN Chords"
-            availableSequenceTypes={SEVEN_CHORDS_TYPES}
-            availableGroupTypes={SEVEN_CHORDS_GROUP_NAMES}
+            availableSequenceTypes={Object.keys(SEVEN_CHORDS_TYPES)}
+            availableGroupTypes={Object.keys(SEVEN_CHORDS_GROUP_NAMES)}
           />
         )}
         <Grid templateColumns="repeat(3, 1fr)" gap={6}>
@@ -70,12 +70,10 @@ const Home = observer(() => {
                   onClick={() => {
                     runInAction(() => {
                       GameSettings.setGroupNames(INTERVAL_GROUP_NAMES);
-                      GameSettings.setExerciseName(
-                        INTERVALS_DEFAULT.sequenceName
-                      );
+                      GameSettings.setExerciseName("Intervals");
                       GameSettings.setSequenceTypes(
                         "Simple Intervals",
-                        INTERVALS_DEFAULT.sequenceTypes["Simple Intervals"]
+                        INTERVALS_DEFAULT["Simple Intervals"]
                       );
                       setIsIntervals(true);
                       setIsMenu(false);
@@ -97,11 +95,13 @@ const Home = observer(() => {
                   bgColor={"green"}
                   onClick={() => {
                     runInAction(() => {
-                      GameSettings.setGroupNames(TRIAD_GROUP_NAMES);
-                      GameSettings.setExerciseName(TRIAD_DEFAULT.sequenceName);
+                      GameSettings.setGroupNames(
+                        Object.keys(TRIAD_GROUP_NAMES)
+                      );
+                      GameSettings.setExerciseName("Triads");
                       GameSettings.setSequenceTypes(
                         "Root Position",
-                        TRIAD_DEFAULT.sequenceTypes["Root Position"]
+                        TRIAD_DEFAULT["Root Position"]
                       );
                       setIsTriads(true);
                       setIsMenu(false);
@@ -124,20 +124,20 @@ const Home = observer(() => {
                   whiteSpace={"nowrap"}
                   onClick={() => {
                     runInAction(() => {
-                      GameSettings.setGroupNames(SEVEN_CHORDS_GROUP_NAMES);
-                      GameSettings.setExerciseName(
-                        SEVEN_CHORDS_DEFAULT.sequenceName
+                      GameSettings.setGroupNames(
+                        Object.keys(SEVEN_CHORDS_GROUP_NAMES)
                       );
+                      GameSettings.setExerciseName("Seven Chords");
                       GameSettings.setSequenceTypes(
                         "Root Position",
-                        SEVEN_CHORDS_DEFAULT.sequenceTypes["Root Position"]
+                        SEVEN_CHORDS_DEFAULT["Root Position"]
                       );
                       setIsSevenChords(true);
                       setIsMenu(false);
                     });
                   }}
                 >
-                  SEVEN Chords
+                  Seven Chords
                 </Button>
               </GridItem>
             </>

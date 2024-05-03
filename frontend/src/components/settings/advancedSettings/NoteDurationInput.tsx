@@ -1,5 +1,4 @@
 import {
-  Flex,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
@@ -8,7 +7,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import GameSettings from "../../context/GameContext";
+import GameSettings from "../../../state/Game";
 const NoteDurationInput = () => {
   return (
     <Stack padding={5}>
