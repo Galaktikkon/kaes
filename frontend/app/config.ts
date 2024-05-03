@@ -69,6 +69,25 @@ const EXTENDED_CHORDS_DEFAULT = {
   },
 };
 
+const PIANO_KEYS = ["A0", "A#0", "B0"].concat(
+  Array.from({ length: 6 }, (_, i) => [
+    `C${i + 1}`,
+    `C#${i + 1}`,
+    `D${i + 1}`,
+    `D#${i + 1}`,
+    `E${i + 1}`,
+    `F${i + 1}`,
+    `F#${i + 1}`,
+    `G${i + 1}`,
+    `G#${i + 1}`,
+    `A${i + 1}`,
+    `A#${i + 1}`,
+    `H${i + 1}`,
+  ])
+    .flat()
+    .concat(["C8"])
+);
+
 export {
   INTERVAL_TYPES,
   INTERVAL_GROUP_NAMES,
@@ -79,4 +98,5 @@ export {
   EXTENDED_CHORDS_TYPES,
   EXTENDED_CHORDS_GROUP_NAMES,
   EXTENDED_CHORDS_DEFAULT,
+  PIANO_KEYS,
 };

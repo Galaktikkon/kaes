@@ -14,10 +14,12 @@ class Game {
     noteDuration: number;
     playType: string;
     instrument: string;
+    octaveRange: [string, string];
   } = {
     noteDuration: 1,
     playType: "melodic-up",
     instrument: "piano",
+    octaveRange: ["C3", "C5"],
   };
   currentStats: {
     correct: number;
@@ -58,11 +60,13 @@ class Game {
       noteDuration: number;
       playType: string;
       instrument: string;
+      octaveRange: [string, string];
     }>[]
   ) {
     for (const arg of args) {
       Object.assign(this.settings, arg);
     }
+    console.log("🚀 ~ Game ~ this.settings:", this.settings);
   }
 }
 
