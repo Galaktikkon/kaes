@@ -13,7 +13,7 @@ import NoteDurationInput from "./NoteDurationInput";
 
 const AdvancedSettingsDropdown = () => {
   return (
-    <Accordion defaultIndex={[0]} allowMultiple paddingTop={10}>
+    <Accordion defaultIndex={-1} paddingTop={10} allowToggle>
       <AccordionItem>
         <h2>
           <AccordionButton>

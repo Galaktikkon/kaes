@@ -1,5 +1,4 @@
 import { Flex, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
-import PianoIcon from "@mui/icons-material/Piano";
 const InstrumentMenu = () => {
   return (
     <Flex padding={5}>
