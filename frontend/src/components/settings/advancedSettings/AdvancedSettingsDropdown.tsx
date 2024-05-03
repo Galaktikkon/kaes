@@ -7,7 +7,7 @@ import {
   Box,
   VStack,
 } from "@chakra-ui/react";
-import InstrumentMenu from "./IntstrumentMenu";
+import InstrumentMenu from "./InstrumentMenu";
 import OctaveSlider from "./OctaveSlider";
 import NoteDurationInput from "./NoteDurationInput";
 

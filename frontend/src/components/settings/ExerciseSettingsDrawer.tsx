@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { SettingsIcon } from "@chakra-ui/icons";
-import AdvancedSettingsDropdown from "./AdvancedSettings/AdvancedSettingsDropdown";
+import AdvancedSettingsDropdown from "./advancedSettings/AdvancedSettingsDropdown";
 import SequenceTypesCheckboxes from "./Checkboxes/SequenceTypesCheckboxes";
 
 interface ExerciseSettingsDrawerProps {

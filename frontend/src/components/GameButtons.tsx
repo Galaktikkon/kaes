@@ -2,7 +2,7 @@
 
 import { Button, Flex, HStack, Spacer, Stack } from "@chakra-ui/react";
 import { observer } from "mobx-react";
-import GameSettings from "../state/Game";
+import game from "../state/Game";
 import ExerciseSettingsDrawer from "./settings/ExerciseSettingsDrawer";
 
 interface GameButtonsProps {
@@ -21,7 +21,7 @@ const GameButtons = observer(
       <HStack>
         <Flex>
           <Stack spacing={2}>
-            {Object.entries(GameSettings.exercise.sequenceTypes).map(
+            {Object.entries(game.settings.exercise.sequenceTypes).map(
               ([subType, types], index) => {
                 return (
                   <Stack key={index} spacing={2}>
@@ -31,7 +31,7 @@ const GameButtons = observer(
                         variant={"outline"}
                         colorScheme={"gray"}
                       >
-                        {GameSettings.exercise.name === "Intervals" ||
+                        {game.settings.exercise.name === "Intervals" ||
                         type === "Augmented"
                           ? type
                           : type + " - " + subType}

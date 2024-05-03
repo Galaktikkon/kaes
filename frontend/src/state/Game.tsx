@@ -2,27 +2,84 @@
 
 import { makeAutoObservable, runInAction } from "mobx";
 
-class Game {
-  private static instance: Game;
-
+type GameSettings = {
   exercise: {
     name: string;
     sequenceTypes: { [groupName: string]: string[] };
-  } = {
-    name: "",
-    sequenceTypes: {},
   };
-  settings: {
+  playSettings: {
     noteDuration: number;
     playType: string;
     instrument: string;
     octaveRange: [string, string];
-  } = {
-    noteDuration: 1,
-    playType: "melodic-up",
-    instrument: "piano",
-    octaveRange: ["C3", "C5"],
   };
+  setExerciseName: (newExerciseName: string) => void;
+  setSequenceTypes: (groupName: string, newTypes: string[]) => void;
+  setGroupNames: (groupNames: string[]) => void;
+  setPlaySettings: (
+    ...args: Partial<{
+      noteDuration: number;
+      playType: string;
+      instrument: string;
+      octaveRange: [string, string];
+    }>[]
+  ) => void;
+};
+
+class Game {
+  private static instance: Game;
+
+  settings: GameSettings = {
+    exercise: {
+      name: "",
+      sequenceTypes: {},
+    },
+    playSettings: {
+      noteDuration: 1,
+      playType: "melodic-up",
+      instrument: "piano",
+      octaveRange: ["C3", "C5"],
+    },
+
+    setExerciseName: (newExerciseName: string) => {
+      this.settings.exercise.name = newExerciseName;
+    },
+
+    setSequenceTypes: (groupName: string, newTypes: string[]) => {
+      runInAction(() => {
+        this.settings.exercise.sequenceTypes = {
+          ...this.settings.exercise.sequenceTypes,
+          [groupName]: newTypes,
+        };
+      });
+    },
+
+    setPlaySettings: (
+      ...args: Partial<{
+        noteDuration: number;
+        playType: string;
+        instrument: string;
+        octaveRange: [string, string];
+      }>[]
+    ) => {
+      for (const arg of args) {
+        Object.assign(this.settings, arg);
+      }
+    },
+
+    setGroupNames: (groupNames: string[]) => {
+      runInAction(() => {
+        this.settings.exercise.sequenceTypes = {};
+        for (const name of groupNames) {
+          this.settings.exercise.sequenceTypes = {
+            ...this.settings.exercise.sequenceTypes,
+            [name]: [],
+          };
+        }
+      });
+    },
+  };
+
   currentStats: {
     correct: number;
     incorrect: number;
@@ -41,46 +98,8 @@ class Game {
     }
     return Game.instance;
   }
-
-  setExerciseName(newExerciseName: string) {
-    this.exercise.name = newExerciseName;
-  }
-
-  setSequenceTypes(groupName: string, newTypes: string[]) {
-    runInAction(() => {
-      this.exercise.sequenceTypes = {
-        ...this.exercise.sequenceTypes,
-        [groupName]: newTypes,
-      };
-    });
-  }
-
-  setGroupNames(groupNames: string[]) {
-    runInAction(() => {
-      this.exercise.sequenceTypes = {};
-      for (const name of groupNames) {
-        this.exercise.sequenceTypes = {
-          ...this.exercise.sequenceTypes,
-          [name]: [],
-        };
-      }
-    });
-  }
-
-  setGameSettings(
-    ...args: Partial<{
-      noteDuration: number;
-      playType: string;
-      instrument: string;
-      octaveRange: [string, string];
-    }>[]
-  ) {
-    for (const arg of args) {
-      Object.assign(this.settings, arg);
-    }
-  }
 }
 
-const GameSettings: Game = Game.getInstance();
+const game: Game = Game.getInstance();
 
-export default GameSettings;
+export default game;

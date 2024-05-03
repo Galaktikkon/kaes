@@ -5,7 +5,7 @@ import { useState } from "react";
 import { observer } from "mobx-react";
 import { runInAction } from "mobx";
 import Header from "@/src/components/Header";
-import GameSettings from "@/src/state/Game";
+import game from "@/src/state/Game";
 import GameButtons from "@/src/components/GameButtons";
 import {
   SEVEN_CHORDS_DEFAULT,
@@ -69,9 +69,9 @@ const Home = observer(() => {
                   bgColor={"blueviolet"}
                   onClick={() => {
                     runInAction(() => {
-                      GameSettings.setGroupNames(INTERVAL_GROUP_NAMES);
-                      GameSettings.setExerciseName("Intervals");
-                      GameSettings.setSequenceTypes(
+                      game.settings.setGroupNames(INTERVAL_GROUP_NAMES);
+                      game.settings.setExerciseName("Intervals");
+                      game.settings.setSequenceTypes(
                         "Simple Intervals",
                         INTERVALS_DEFAULT["Simple Intervals"]
                       );
@@ -95,11 +95,11 @@ const Home = observer(() => {
                   bgColor={"green"}
                   onClick={() => {
                     runInAction(() => {
-                      GameSettings.setGroupNames(
+                      game.settings.setGroupNames(
                         Object.keys(TRIAD_GROUP_NAMES)
                       );
-                      GameSettings.setExerciseName("Triads");
-                      GameSettings.setSequenceTypes(
+                      game.settings.setExerciseName("Triads");
+                      game.settings.setSequenceTypes(
                         "Root Position",
                         TRIAD_DEFAULT["Root Position"]
                       );
@@ -124,11 +124,11 @@ const Home = observer(() => {
                   whiteSpace={"nowrap"}
                   onClick={() => {
                     runInAction(() => {
-                      GameSettings.setGroupNames(
+                      game.settings.setGroupNames(
                         Object.keys(SEVEN_CHORDS_GROUP_NAMES)
                       );
-                      GameSettings.setExerciseName("Seven Chords");
-                      GameSettings.setSequenceTypes(
+                      game.settings.setExerciseName("Seven Chords");
+                      game.settings.setSequenceTypes(
                         "Root Position",
                         SEVEN_CHORDS_DEFAULT["Root Position"]
                       );

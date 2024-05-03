@@ -7,7 +7,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import GameSettings from "../../../state/Game";
+import game from "../../../state/Game";
 const NoteDurationInput = () => {
   return (
     <Stack padding={5}>
@@ -19,7 +19,7 @@ const NoteDurationInput = () => {
         step={0.5}
         clampValueOnBlur={false}
         onChange={(value) => {
-          GameSettings.setGameSettings({ noteDuration: Number(value) });
+          game.settings.setPlaySettings({ noteDuration: Number(value) });
         }}
       >
         <NumberInputField w={20} />

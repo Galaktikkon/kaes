@@ -2,7 +2,7 @@
 import { HStack, VStack } from "@chakra-ui/react";
 import { Checkbox } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import GameSettings from "../../../state/Game";
+import game from "../../../state/Game";
 import GroupTypesCheckboxes from "./GroupTypesCheckboxes";
 
 interface SequenceTypesCheckboxesProps {
@@ -27,7 +27,7 @@ const SequenceTypesCheckboxes = ({
         )
           .fill(false)
           .map((_, index) => {
-            return GameSettings.exercise.sequenceTypes[name].includes(
+            return game.settings.exercise.sequenceTypes[name].includes(
               types[index]
             );
           }),
@@ -92,7 +92,7 @@ const SequenceTypesCheckboxes = ({
 
   useEffect(() => {
     for (const name of groupTypes) {
-      GameSettings.setSequenceTypes(
+      game.settings.setSequenceTypes(
         name,
         types.filter((type, index) => optionsChecked[name][index])
       );
