@@ -2,7 +2,7 @@
 
 import { Button, Flex, HStack, Spacer, Stack } from "@chakra-ui/react";
 import { observer } from "mobx-react";
-import GameSettings from "./context/GameContext";
+import GameSettings from "../state/Game";
 import ExerciseSettingsDrawer from "./settings/ExerciseSettingsDrawer";
 
 interface GameButtonsProps {
