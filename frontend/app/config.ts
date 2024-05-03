@@ -13,8 +13,7 @@ const INTERVAL_TYPES: string[] = [
   "Major Seventh",
   "Octave",
 ] as const;
-const INTERVAL_GROUP_NAMES: string[] = ["Simple Intervals"];
-
+const INTERVAL_GROUP_NAMES: string[] = ["Simple Intervals"] as const;
 const INTERVALS_DEFAULT = {
   sequenceName: "Intervals",
   sequenceTypes: {
@@ -30,13 +29,17 @@ const INTERVALS_DEFAULT = {
   },
 };
 
-const TRIAD_TYPES: string[] = ["Major", "Minor", "Diminished", "Augmented"];
+const TRIAD_TYPES: string[] = [
+  "Major",
+  "Minor",
+  "Diminished",
+  "Augmented",
+] as const;
 const TRIAD_GROUP_NAMES: string[] = [
   "Root Position",
   "First Inversion",
   "Second Inversion",
-];
-
+] as const;
 const TRIAD_DEFAULT = {
   sequenceName: "Triads",
   sequenceTypes: {
@@ -49,14 +52,13 @@ const SEVEN_CHORDS_TYPES: string[] = [
   "Minor Dominant Seven",
   "Half Diminished Seventh",
   "Fully Diminished Seventh",
-];
+] as const;
 const SEVEN_CHORDS_GROUP_NAMES: string[] = [
   "Root Position",
   "First Inversion",
   "Second Inversion",
   "Third Inversion",
-];
-
+] as const;
 const SEVEN_CHORDS_DEFAULT = {
   sequenceName: "SEVEN Chords",
   sequenceTypes: {
@@ -69,8 +71,11 @@ const SEVEN_CHORDS_DEFAULT = {
   },
 };
 
-const PIANO_KEYS = ["A0", "A#0", "B0"].concat(
-  Array.from({ length: 6 }, (_, i) => [
+const PIANO_KEYS = [
+  "A0",
+  "A#0",
+  "B0",
+  ...Array.from({ length: 6 }, (_, i) => [
     `C${i + 1}`,
     `C#${i + 1}`,
     `D${i + 1}`,
@@ -82,11 +87,10 @@ const PIANO_KEYS = ["A0", "A#0", "B0"].concat(
     `G#${i + 1}`,
     `A${i + 1}`,
     `A#${i + 1}`,
-    `H${i + 1}`,
-  ])
-    .flat()
-    .concat(["C8"])
-);
+    `B${i + 1}`,
+  ]).flat(),
+  "C8",
+] as const;
 
 export {
   INTERVAL_TYPES,
