@@ -44,21 +44,21 @@ const TRIAD_DEFAULT = {
   },
 };
 
-const EXTENDED_CHORDS_TYPES: string[] = [
+const SEVEN_CHORDS_TYPES: string[] = [
   "Dominant Seven",
   "Minor Dominant Seven",
   "Half Diminished Seventh",
   "Fully Diminished Seventh",
 ];
-const EXTENDED_CHORDS_GROUP_NAMES: string[] = [
+const SEVEN_CHORDS_GROUP_NAMES: string[] = [
   "Root Position",
   "First Inversion",
   "Second Inversion",
   "Third Inversion",
 ];
 
-const EXTENDED_CHORDS_DEFAULT = {
-  sequenceName: "Extended Chords",
+const SEVEN_CHORDS_DEFAULT = {
+  sequenceName: "SEVEN Chords",
   sequenceTypes: {
     "Root Position": [
       "Dominant Seven",
@@ -95,8 +95,8 @@ export {
   TRIAD_TYPES,
   TRIAD_GROUP_NAMES,
   TRIAD_DEFAULT,
-  EXTENDED_CHORDS_TYPES,
-  EXTENDED_CHORDS_GROUP_NAMES,
-  EXTENDED_CHORDS_DEFAULT,
+  SEVEN_CHORDS_TYPES,
+  SEVEN_CHORDS_GROUP_NAMES,
+  SEVEN_CHORDS_DEFAULT,
   PIANO_KEYS,
 };

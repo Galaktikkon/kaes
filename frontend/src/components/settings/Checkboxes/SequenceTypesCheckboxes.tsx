@@ -2,15 +2,18 @@
 import { HStack, VStack } from "@chakra-ui/react";
 import { Checkbox } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import SettingsCheckboxGroup from "./SettingsCheckboxGroup";
 import GameSettings from "../../context/GameContext";
+import GroupTypesCheckboxes from "./GroupTypesCheckboxes";
 
-interface TypeCheckboxesProps {
+interface SequenceTypesCheckboxesProps {
   types: string[];
   groupTypes: string[];
 }
 
-const TypeCheckboxes = ({ types, groupTypes }: TypeCheckboxesProps) => {
+const SequenceTypesCheckboxes = ({
+  types,
+  groupTypes,
+}: SequenceTypesCheckboxesProps) => {
   const [optionsChecked, setOptionChecked] = useState<{
     [key: string]: boolean[];
   }>(
@@ -128,7 +131,7 @@ const TypeCheckboxes = ({ types, groupTypes }: TypeCheckboxesProps) => {
           flexWrap="wrap"
         >
           {groupTypes.map((groupType: string, index: number) => (
-            <SettingsCheckboxGroup
+            <GroupTypesCheckboxes
               key={index}
               types={
                 groupType === "Root Position"
@@ -149,4 +152,4 @@ const TypeCheckboxes = ({ types, groupTypes }: TypeCheckboxesProps) => {
   );
 };
 
-export default TypeCheckboxes;
+export default SequenceTypesCheckboxes;

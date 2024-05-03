@@ -11,22 +11,22 @@ import {
   IconButton,
   useDisclosure,
 } from "@chakra-ui/react";
-import AdvancedSettingsDropdown from "./AdvancedSettings/AdvancedSettingsDropdown";
-import TypeCheckboxes from "./Checkboxes/TypeCheckboxes";
 import React from "react";
 import { SettingsIcon } from "@chakra-ui/icons";
+import AdvancedSettingsDropdown from "./AdvancedSettings/AdvancedSettingsDropdown";
+import SequenceTypesCheckboxes from "./Checkboxes/SequenceTypesCheckboxes";
 
-interface SequenceTypesSettingsProps {
-  sequenceName: string;
-  sequenceTypes: string[];
-  groupTypes: string[];
+interface ExerciseSettingsDrawerProps {
+  exerciseName: string;
+  availableSequenceTypes: string[];
+  availableGroupTypes: string[];
 }
 
-const SequenceTypesSettings = ({
-  sequenceName,
-  sequenceTypes,
-  groupTypes,
-}: SequenceTypesSettingsProps) => {
+const ExerciseSettingsDrawer = ({
+  exerciseName,
+  availableSequenceTypes,
+  availableGroupTypes,
+}: ExerciseSettingsDrawerProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -47,10 +47,13 @@ const SequenceTypesSettings = ({
         <DrawerContent>
           <DrawerCloseButton top="20px" right="40px" />
 
-          <DrawerHeader>{sequenceName} Settings</DrawerHeader>
+          <DrawerHeader>{exerciseName} Settings</DrawerHeader>
 
           <DrawerBody>
-            <TypeCheckboxes types={sequenceTypes} groupTypes={groupTypes} />
+            <SequenceTypesCheckboxes
+              types={availableSequenceTypes}
+              groupTypes={availableGroupTypes}
+            />
             <AdvancedSettingsDropdown />
           </DrawerBody>
 
@@ -61,4 +64,4 @@ const SequenceTypesSettings = ({
   );
 };
 
-export default SequenceTypesSettings;
+export default ExerciseSettingsDrawer;

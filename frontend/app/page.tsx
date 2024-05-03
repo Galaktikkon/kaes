@@ -1,14 +1,16 @@
 "use client";
 
 import { Button, Container, Grid, GridItem, HStack } from "@chakra-ui/react";
-import Header from "@/src/components/Header";
 import { useState } from "react";
+import { observer } from "mobx-react";
+import { runInAction } from "mobx";
+import Header from "@/src/components/Header";
 import GameSettings from "@/src/components/context/GameContext";
 import GameButtons from "@/src/components/GameButtons";
 import {
-  EXTENDED_CHORDS_DEFAULT,
-  EXTENDED_CHORDS_GROUP_NAMES,
-  EXTENDED_CHORDS_TYPES,
+  SEVEN_CHORDS_DEFAULT,
+  SEVEN_CHORDS_GROUP_NAMES,
+  SEVEN_CHORDS_TYPES,
   INTERVALS_DEFAULT,
   INTERVAL_GROUP_NAMES,
   INTERVAL_TYPES,
@@ -16,8 +18,6 @@ import {
   TRIAD_GROUP_NAMES,
   TRIAD_TYPES,
 } from "./config";
-import { observer } from "mobx-react";
-import { runInAction } from "mobx";
 
 const Home = observer(() => {
   const [isMenu, setIsMenu] = useState(true);
@@ -36,23 +36,23 @@ const Home = observer(() => {
       >
         {isIntervals && (
           <GameButtons
-            sequenceName="Intervals"
-            sequenceTypes={INTERVAL_TYPES}
-            groupTypes={INTERVAL_GROUP_NAMES}
+            exerciseName="Intervals"
+            availableSequenceTypes={INTERVAL_TYPES}
+            availableGroupTypes={INTERVAL_GROUP_NAMES}
           />
         )}
         {isTriads && (
           <GameButtons
-            sequenceName="Triads"
-            sequenceTypes={TRIAD_TYPES}
-            groupTypes={TRIAD_GROUP_NAMES}
+            exerciseName="Triads"
+            availableSequenceTypes={TRIAD_TYPES}
+            availableGroupTypes={TRIAD_GROUP_NAMES}
           />
         )}
         {isSevenChords && (
           <GameButtons
-            sequenceName="Extended Chords"
-            sequenceTypes={EXTENDED_CHORDS_TYPES}
-            groupTypes={EXTENDED_CHORDS_GROUP_NAMES}
+            exerciseName="SEVEN Chords"
+            availableSequenceTypes={SEVEN_CHORDS_TYPES}
+            availableGroupTypes={SEVEN_CHORDS_GROUP_NAMES}
           />
         )}
         <Grid templateColumns="repeat(3, 1fr)" gap={6}>
@@ -124,20 +124,20 @@ const Home = observer(() => {
                   whiteSpace={"nowrap"}
                   onClick={() => {
                     runInAction(() => {
-                      GameSettings.setGroupNames(EXTENDED_CHORDS_GROUP_NAMES);
+                      GameSettings.setGroupNames(SEVEN_CHORDS_GROUP_NAMES);
                       GameSettings.setExerciseName(
-                        EXTENDED_CHORDS_DEFAULT.sequenceName
+                        SEVEN_CHORDS_DEFAULT.sequenceName
                       );
                       GameSettings.setSequenceTypes(
                         "Root Position",
-                        EXTENDED_CHORDS_DEFAULT.sequenceTypes["Root Position"]
+                        SEVEN_CHORDS_DEFAULT.sequenceTypes["Root Position"]
                       );
                       setIsSevenChords(true);
                       setIsMenu(false);
                     });
                   }}
                 >
-                  Extended Chords
+                  SEVEN Chords
                 </Button>
               </GridItem>
             </>

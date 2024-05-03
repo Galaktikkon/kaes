@@ -6,10 +6,10 @@ class Game {
   private static instance: Game;
 
   exercise: {
-    sequenceName: string;
-    sequenceTypes: { [subType: string]: string[] };
+    name: string;
+    sequenceTypes: { [groupName: string]: string[] };
   } = {
-    sequenceName: "",
+    name: "",
     sequenceTypes: {},
   };
   settings: {
@@ -42,8 +42,8 @@ class Game {
     return Game.instance;
   }
 
-  setExerciseName(exerciseName: string) {
-    this.exercise.sequenceName = exerciseName;
+  setExerciseName(newExerciseName: string) {
+    this.exercise.name = newExerciseName;
   }
 
   setSequenceTypes(groupName: string, newTypes: string[]) {

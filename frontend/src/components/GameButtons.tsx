@@ -1,18 +1,22 @@
 "use client";
 
 import { Button, Flex, HStack, Spacer, Stack } from "@chakra-ui/react";
-import GameSettings from "./context/GameContext";
-import SequenceTypesSettings from "./settings/SequenceTypesSettings";
 import { observer } from "mobx-react";
+import GameSettings from "./context/GameContext";
+import ExerciseSettingsDrawer from "./settings/ExerciseSettingsDrawer";
 
 interface GameButtonsProps {
-  sequenceName: string;
-  sequenceTypes: string[];
-  groupTypes: string[];
+  exerciseName: string;
+  availableSequenceTypes: string[];
+  availableGroupTypes: string[];
 }
 
 const GameButtons = observer(
-  ({ sequenceName, sequenceTypes, groupTypes }: GameButtonsProps) => {
+  ({
+    exerciseName,
+    availableSequenceTypes,
+    availableGroupTypes,
+  }: GameButtonsProps) => {
     return (
       <HStack>
         <Flex>
@@ -27,7 +31,7 @@ const GameButtons = observer(
                         variant={"outline"}
                         colorScheme={"gray"}
                       >
-                        {GameSettings.exercise.sequenceName === "Intervals" ||
+                        {GameSettings.exercise.name === "Intervals" ||
                         type === "Augmented"
                           ? type
                           : type + " - " + subType}
@@ -40,10 +44,10 @@ const GameButtons = observer(
           </Stack>
           <Spacer />
           <Flex>
-            <SequenceTypesSettings
-              sequenceName={sequenceName}
-              sequenceTypes={sequenceTypes}
-              groupTypes={groupTypes}
+            <ExerciseSettingsDrawer
+              exerciseName={exerciseName}
+              availableSequenceTypes={availableSequenceTypes}
+              availableGroupTypes={availableGroupTypes}
             />
           </Flex>
         </Flex>

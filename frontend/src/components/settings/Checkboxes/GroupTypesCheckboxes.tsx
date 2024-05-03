@@ -2,7 +2,7 @@
 
 import { Checkbox, CheckboxGroup, Stack, VStack } from "@chakra-ui/react";
 
-interface SettingsCheckboxGroupProps {
+interface GroupTypesCheckboxesProps {
   groupName: string;
   types: string[];
   isGroupCheckbox: Function;
@@ -12,7 +12,7 @@ interface SettingsCheckboxGroupProps {
   isGroupIndeterminate: Function;
 }
 
-const SettingsCheckboxGroup = ({
+const GroupTypesCheckboxes = ({
   groupName,
   types,
   isGroupCheckbox,
@@ -20,7 +20,7 @@ const SettingsCheckboxGroup = ({
   isTypeCheckbox,
   setTypeCheckbox,
   isGroupIndeterminate,
-}: SettingsCheckboxGroupProps) => {
+}: GroupTypesCheckboxesProps) => {
   return (
     <>
       <CheckboxGroup>
@@ -55,4 +55,4 @@ const SettingsCheckboxGroup = ({
   );
 };
 
-export default SettingsCheckboxGroup;
+export default GroupTypesCheckboxes;
