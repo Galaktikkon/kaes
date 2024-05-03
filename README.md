@@ -9,7 +9,7 @@
 tech: **Next.js** (ma wbudowany router i łatwy jest do ogarniecia), **Chakra-UI**
 
 * [X] ~~*panel do logowania/rejestracji*~~ [2024-03-27]
-* [ ] panel do konfiguracji zadan (wybor cwiczenia, intstrumentu, dlugosci itp.)
+* [X] ~~*panel do konfiguracji zadan (wybor cwiczenia, intstrumentu, dlugosci itp.)*~~ [2024-05-03]
 * [X] ~~*glowny pasek do nawigacji (wylogowanie, link do profilu uzytkownika)*~~ [2024-04-08]
 * [ ] panel statystyk uzytkownika
 * [ ] interfejs gry (wybor odpowiedzi, biezace statystyki sesji)
@@ -29,11 +29,11 @@ tech: **DJANGO**
     * [ ] opcje generowania przykladow (harmonicznie, melodycznie, w gore w dol, kombo) dla interwalow
   * [ ] endpoint zwracajacy zadanie w zalezniosci od trojdzwieku
     * [X] ~~*jeden typ (np. molowy)*~~ [2024-04-07]
-    * [ ] moze przyjac wiele typow
+    * [X] ~~*moze przyjac wiele typow*~~ [2024-04-08]
     * [ ] opcje generowania przykladow (harmonicznie, melodycznie, w gore w dol, kombo) dla trojdzwiekow
   * [ ] endpoint zwracajacy zadanie w zalezniosci od trojdzwieku czterodzwieku
     * [X] ~~*jeden typ (np. D7)*~~ [2024-04-07]
-    * [ ]  moze przyjac wiele typow
+    * [X] ~~*moze przyjac wiele typow*~~ [2024-04-08]
     * [ ]  opcje generowania przykladow (harmonicznie, melodycznie, w gore w dol, kombo) dla czterodzwiekow
 * [ ] zapisywanie statystyk uzytkownika do bazy
   * [ ] endpoint do zapisywania odpowiedzi interwalow
