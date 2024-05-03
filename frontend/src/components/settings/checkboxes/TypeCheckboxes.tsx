@@ -89,8 +89,7 @@ const TypeCheckboxes = ({ types, groupTypes }: TypeCheckboxesProps) => {
 
   useEffect(() => {
     for (const name of groupTypes) {
-      GameSettings.setExercise(
-        GameSettings.exercise.sequenceName,
+      GameSettings.setSequenceTypes(
         name,
         types.filter((type, index) => optionsChecked[name][index])
       );

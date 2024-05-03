@@ -3,6 +3,8 @@
 import { makeAutoObservable, runInAction } from "mobx";
 
 class Game {
+  private static instance: Game;
+
   exercise: {
     sequenceName: string;
     sequenceTypes: { [subType: string]: string[] };
@@ -29,13 +31,23 @@ class Game {
     incorrect: 0,
   };
 
-  constructor() {
+  private constructor() {
     makeAutoObservable(this);
   }
 
-  setExercise(exerciseName: string, groupName: string, newTypes: string[]) {
+  static getInstance(): Game {
+    if (!Game.instance) {
+      Game.instance = new Game();
+    }
+    return Game.instance;
+  }
+
+  setExerciseName(exerciseName: string) {
+    this.exercise.sequenceName = exerciseName;
+  }
+
+  setSequenceTypes(groupName: string, newTypes: string[]) {
     runInAction(() => {
-      this.exercise.sequenceName = exerciseName;
       this.exercise.sequenceTypes = {
         ...this.exercise.sequenceTypes,
         [groupName]: newTypes,
@@ -66,10 +78,9 @@ class Game {
     for (const arg of args) {
       Object.assign(this.settings, arg);
     }
-    console.log("🚀 ~ Game ~ this.settings:", this.settings);
   }
 }
 
-const GameSettings: Game = new Game();
+const GameSettings: Game = Game.getInstance();
 
 export default GameSettings;

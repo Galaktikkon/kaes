@@ -70,8 +70,10 @@ const Home = observer(() => {
                   onClick={() => {
                     runInAction(() => {
                       GameSettings.setGroupNames(INTERVAL_GROUP_NAMES);
-                      GameSettings.setExercise(
-                        INTERVALS_DEFAULT.sequenceName,
+                      GameSettings.setExerciseName(
+                        INTERVALS_DEFAULT.sequenceName
+                      );
+                      GameSettings.setSequenceTypes(
                         "Simple Intervals",
                         INTERVALS_DEFAULT.sequenceTypes["Simple Intervals"]
                       );
@@ -96,8 +98,8 @@ const Home = observer(() => {
                   onClick={() => {
                     runInAction(() => {
                       GameSettings.setGroupNames(TRIAD_GROUP_NAMES);
-                      GameSettings.setExercise(
-                        TRIAD_DEFAULT.sequenceName,
+                      GameSettings.setExerciseName(TRIAD_DEFAULT.sequenceName);
+                      GameSettings.setSequenceTypes(
                         "Root Position",
                         TRIAD_DEFAULT.sequenceTypes["Root Position"]
                       );
@@ -123,8 +125,10 @@ const Home = observer(() => {
                   onClick={() => {
                     runInAction(() => {
                       GameSettings.setGroupNames(EXTENDED_CHORDS_GROUP_NAMES);
-                      GameSettings.setExercise(
-                        EXTENDED_CHORDS_DEFAULT.sequenceName,
+                      GameSettings.setExerciseName(
+                        EXTENDED_CHORDS_DEFAULT.sequenceName
+                      );
+                      GameSettings.setSequenceTypes(
                         "Root Position",
                         EXTENDED_CHORDS_DEFAULT.sequenceTypes["Root Position"]
                       );
