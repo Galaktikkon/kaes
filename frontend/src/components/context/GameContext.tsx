@@ -1,8 +1,6 @@
 "use client";
 
-import { group } from "console";
-import { autorun, makeAutoObservable, runInAction } from "mobx";
-import { createContext, useContext } from "react";
+import { makeAutoObservable, runInAction } from "mobx";
 
 class Game {
   exercise: {
@@ -40,11 +38,6 @@ class Game {
         ...this.exercise.sequenceTypes,
         [groupName]: newTypes,
       };
-
-      console.log(
-        "🚀 SetExercise: ~ Game ~ runInAction ~ this.exercise.sequenceTypes:",
-        this.exercise.sequenceTypes
-      );
     });
   }
 
@@ -57,10 +50,6 @@ class Game {
           [name]: [],
         };
       }
-      console.log(
-        "🚀 SetGroupNames: ~ Game ~ runInAction ~ this.exercise.sequenceTypes :",
-        this.exercise.sequenceTypes
-      );
     });
   }
 
@@ -80,21 +69,3 @@ class Game {
 const GameSettings: Game = new Game();
 
 export default GameSettings;
-
-// const GameSettingsContext = createContext(new Game());
-
-// export function GameSettingsWrapper({
-//   children,
-// }: {
-//   children: React.ReactNode;
-// }) {
-//   return (
-//     <GameSettingsContext.Provider value={new Game()}>
-//       {children}
-//     </GameSettingsContext.Provider>
-//   );
-// }
-
-// export function useGameSettingsContext() {
-//   return useContext(GameSettingsContext);
-// }

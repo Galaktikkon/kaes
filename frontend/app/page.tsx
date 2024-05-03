@@ -26,8 +26,6 @@ const Home = observer(() => {
   const [isSevenChords, setIsSevenChords] = useState(false);
 
   return (
-    // <GameSettingsWrapper>
-    //   {
     <>
       <Header />
       <Container
@@ -164,8 +162,6 @@ const Home = observer(() => {
         )}
       </Container>
     </>
-    //   }
-    // </GameSettingsWrapper>
   );
 });
 

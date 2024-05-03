@@ -15,7 +15,6 @@ import {
   Center,
   VStack,
 } from "@chakra-ui/react";
-import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 
