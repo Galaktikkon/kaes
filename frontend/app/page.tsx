@@ -1,24 +1,30 @@
 "use client";
 
-import {
-  Box,
-  Button,
-  CloseButton,
-  Container,
-  Grid,
-  GridItem,
-} from "@chakra-ui/react";
-import Header from "@/src/components/Header";
+import { Button, Container, Grid, GridItem, HStack } from "@chakra-ui/react";
 import { useState } from "react";
-import IntervalsButtons from "@/src/components/IntervalsButtons";
-import TriadsButtons from "@/src/components/TriadsButtons";
-import SevenChordsButtons from "@/src/components/SevenChordsButtons";
+import { observer } from "mobx-react";
+import { runInAction } from "mobx";
+import Header from "@/src/components/Header";
+import GameSettings from "@/src/components/context/GameContext";
+import GameButtons from "@/src/components/GameButtons";
+import {
+  SEVEN_CHORDS_DEFAULT,
+  SEVEN_CHORDS_GROUP_NAMES,
+  SEVEN_CHORDS_TYPES,
+  INTERVALS_DEFAULT,
+  INTERVAL_GROUP_NAMES,
+  INTERVAL_TYPES,
+  TRIAD_DEFAULT,
+  TRIAD_GROUP_NAMES,
+  TRIAD_TYPES,
+} from "./config";
 
-export default function Home() {
+const Home = observer(() => {
   const [isMenu, setIsMenu] = useState(true);
   const [isIntervals, setIsIntervals] = useState(false);
   const [isTriads, setIsTriads] = useState(false);
   const [isSevenChords, setIsSevenChords] = useState(false);
+
   return (
     <>
       <Header />
@@ -28,9 +34,27 @@ export default function Home() {
         centerContent
         justifyContent={"center"}
       >
-        {isIntervals && <IntervalsButtons />}
-        {isTriads && <TriadsButtons />}
-        {isSevenChords && <SevenChordsButtons />}
+        {isIntervals && (
+          <GameButtons
+            exerciseName="Intervals"
+            availableSequenceTypes={INTERVAL_TYPES}
+            availableGroupTypes={INTERVAL_GROUP_NAMES}
+          />
+        )}
+        {isTriads && (
+          <GameButtons
+            exerciseName="Triads"
+            availableSequenceTypes={TRIAD_TYPES}
+            availableGroupTypes={TRIAD_GROUP_NAMES}
+          />
+        )}
+        {isSevenChords && (
+          <GameButtons
+            exerciseName="SEVEN Chords"
+            availableSequenceTypes={SEVEN_CHORDS_TYPES}
+            availableGroupTypes={SEVEN_CHORDS_GROUP_NAMES}
+          />
+        )}
         <Grid templateColumns="repeat(3, 1fr)" gap={6}>
           {isMenu && (
             <>
@@ -44,8 +68,18 @@ export default function Home() {
                 <Button
                   bgColor={"blueviolet"}
                   onClick={() => {
-                    setIsIntervals(true);
-                    setIsMenu(false);
+                    runInAction(() => {
+                      GameSettings.setGroupNames(INTERVAL_GROUP_NAMES);
+                      GameSettings.setExerciseName(
+                        INTERVALS_DEFAULT.sequenceName
+                      );
+                      GameSettings.setSequenceTypes(
+                        "Simple Intervals",
+                        INTERVALS_DEFAULT.sequenceTypes["Simple Intervals"]
+                      );
+                      setIsIntervals(true);
+                      setIsMenu(false);
+                    });
                   }}
                 >
                   Intervals
@@ -62,8 +96,16 @@ export default function Home() {
                 <Button
                   bgColor={"green"}
                   onClick={() => {
-                    setIsTriads(true);
-                    setIsMenu(false);
+                    runInAction(() => {
+                      GameSettings.setGroupNames(TRIAD_GROUP_NAMES);
+                      GameSettings.setExerciseName(TRIAD_DEFAULT.sequenceName);
+                      GameSettings.setSequenceTypes(
+                        "Root Position",
+                        TRIAD_DEFAULT.sequenceTypes["Root Position"]
+                      );
+                      setIsTriads(true);
+                      setIsMenu(false);
+                    });
                   }}
                 >
                   Triads
@@ -79,33 +121,52 @@ export default function Home() {
               >
                 <Button
                   bgColor={"red"}
-                  wordBreak={"break-word"}
+                  whiteSpace={"nowrap"}
                   onClick={() => {
-                    setIsSevenChords(true);
-                    setIsMenu(false);
+                    runInAction(() => {
+                      GameSettings.setGroupNames(SEVEN_CHORDS_GROUP_NAMES);
+                      GameSettings.setExerciseName(
+                        SEVEN_CHORDS_DEFAULT.sequenceName
+                      );
+                      GameSettings.setSequenceTypes(
+                        "Root Position",
+                        SEVEN_CHORDS_DEFAULT.sequenceTypes["Root Position"]
+                      );
+                      setIsSevenChords(true);
+                      setIsMenu(false);
+                    });
                   }}
                 >
-                  Extended Chords
+                  SEVEN Chords
                 </Button>
               </GridItem>
             </>
           )}
         </Grid>
         {(isIntervals || isTriads || isSevenChords) && (
-          <Box position={"absolute"} bottom={"5%"}>
-            <CloseButton
-              size={"lg"}
-              colorScheme="telegram"
+          <HStack
+            padding={10}
+            justifyContent={"center"}
+            alignContent={"center"}
+            marginTop={"20%"}
+          >
+            <Button
               onClick={() => {
                 setIsMenu(true);
                 setIsIntervals(false);
                 setIsTriads(false);
                 setIsSevenChords(false);
               }}
-            ></CloseButton>
-          </Box>
+            >
+              EXIT
+            </Button>
+            <Button>SKIP</Button>
+            <Button>AGAIN</Button>
+          </HStack>
         )}
       </Container>
     </>
   );
-}
+});
+
+export default Home;
