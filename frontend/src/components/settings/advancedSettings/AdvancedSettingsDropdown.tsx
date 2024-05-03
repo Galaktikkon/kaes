@@ -5,12 +5,11 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
-  HStack,
   VStack,
 } from "@chakra-ui/react";
 import InstrumentMenu from "./IntstrumentMenu";
-import TimeInput from "./TimeInput";
 import OctaveSlider from "./OctaveSlider";
+import NoteDurationInput from "./NoteDurationInput";
 
 const AdvancedSettingsDropdown = () => {
   return (
@@ -27,7 +26,7 @@ const AdvancedSettingsDropdown = () => {
         <AccordionPanel pb={4}>
           <VStack>
             <OctaveSlider />
-            <TimeInput />
+            <NoteDurationInput />
             <InstrumentMenu />
           </VStack>
         </AccordionPanel>
