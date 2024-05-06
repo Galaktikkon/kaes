@@ -8,8 +8,6 @@ import {
   Menu,
   MenuButton,
   MenuList,
-  MenuDivider,
-  useDisclosure,
   useColorModeValue,
   Stack,
   Center,
@@ -18,32 +16,7 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 
-interface Props {
-  children: React.ReactNode;
-}
-
-const NavLink = (props: Props) => {
-  const { children } = props;
-
-  return (
-    <Box
-      as="a"
-      px={2}
-      py={1}
-      rounded={"md"}
-      _hover={{
-        textDecoration: "none",
-        bg: useColorModeValue("gray.200", "gray.700"),
-      }}
-      href={"#"}
-    >
-      {children}
-    </Box>
-  );
-};
-
 export default function Header() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const session = useSession();
 
   return (
@@ -80,12 +53,6 @@ export default function Header() {
                       <Link href={"/signin"}>Not logged in, sign in here</Link>
                     )}
                   </Center>
-
-                  <br />
-                  <MenuDivider />
-                  {/* <MenuItem>Your Servers</MenuItem>
-                  <MenuItem>Account Settings</MenuItem>
-                  <MenuItem>Logout</MenuItem> */}
                 </MenuList>
               </Menu>
             </Stack>
