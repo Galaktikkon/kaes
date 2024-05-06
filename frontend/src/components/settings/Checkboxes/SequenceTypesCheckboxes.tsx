@@ -2,16 +2,16 @@
 import { HStack, VStack } from "@chakra-ui/react";
 import { Checkbox } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import GameSettings from "../../../state/Game";
+import game from "../../../state/Game";
 import GroupTypesCheckboxes from "./GroupTypesCheckboxes";
 
 interface SequenceTypesCheckboxesProps {
-  types: string[];
+  sequences: { [groupName: string]: { [type: string]: string } };
   groupTypes: string[];
 }
 
 const SequenceTypesCheckboxes = ({
-  types,
+  sequences,
   groupTypes,
 }: SequenceTypesCheckboxesProps) => {
   const [optionsChecked, setOptionChecked] = useState<{
@@ -20,15 +20,11 @@ const SequenceTypesCheckboxes = ({
     groupTypes.reduce((acc, name) => {
       return {
         ...acc,
-        [name]: Array(
-          name === "Root Position"
-            ? types.length
-            : types.filter((item) => item !== "Augmented").length
-        )
+        [name]: Array(Object.keys(sequences[name]).length)
           .fill(false)
           .map((_, index) => {
-            return GameSettings.exercise.sequenceTypes[name].includes(
-              types[index]
+            return game.settings.exercise.sequenceTypes[name].includes(
+              Object.keys(sequences[name])[index]
             );
           }),
       };
@@ -40,11 +36,7 @@ const SequenceTypesCheckboxes = ({
       groupTypes.reduce((acc, name) => {
         return {
           ...acc,
-          [name]: Array(
-            name === "Root Position"
-              ? types.length
-              : types.filter((item) => item !== "Augmented").length
-          ).fill(value),
+          [name]: Array(Object.keys(sequences[name]).length).fill(value),
         };
       }, {})
     );
@@ -62,11 +54,7 @@ const SequenceTypesCheckboxes = ({
   const setGroupCheckbox = (groupName: string, value: boolean) => {
     setOptionChecked({
       ...optionsChecked,
-      [groupName]: Array(
-        groupName === "Root Position"
-          ? types.length
-          : types.filter((item) => item !== "Augmented").length
-      ).fill(value),
+      [groupName]: Array(Object.keys(sequences[groupName]).length).fill(value),
     });
   };
 
@@ -75,7 +63,7 @@ const SequenceTypesCheckboxes = ({
   };
 
   const setTypeCheckbox = (groupName: string, type: string, value: boolean) => {
-    const index = types.indexOf(type);
+    const index = Object.keys(sequences[groupName]).indexOf(type);
     const prevArray = [...optionsChecked[groupName]];
     prevArray[index] = value;
     setOptionChecked({
@@ -85,16 +73,18 @@ const SequenceTypesCheckboxes = ({
   };
 
   const isTypeCheckbox = (groupName: string, type: string) => {
-    const index = types.indexOf(type);
+    const index = Object.keys(sequences[groupName]).indexOf(type);
     const prevArray = [...optionsChecked[groupName]];
     return prevArray[index];
   };
 
   useEffect(() => {
     for (const name of groupTypes) {
-      GameSettings.setSequenceTypes(
+      game.settings.setSequenceTypes(
         name,
-        types.filter((type, index) => optionsChecked[name][index])
+        Object.keys(sequences[name]).filter(
+          (type, index) => optionsChecked[name][index]
+        )
       );
     }
   }, [optionsChecked]);
@@ -130,15 +120,11 @@ const SequenceTypesCheckboxes = ({
           justifyContent={"center"}
           flexWrap="wrap"
         >
-          {groupTypes.map((groupType: string, index: number) => (
+          {groupTypes.map((groupName: string, index: number) => (
             <GroupTypesCheckboxes
               key={index}
-              types={
-                groupType === "Root Position"
-                  ? types
-                  : types.filter((item) => item !== "Augmented")
-              }
-              groupName={groupType}
+              types={Object.keys(sequences[groupName])}
+              groupName={groupName}
               isGroupCheckbox={isGroupChecked}
               setGroupCheckbox={setGroupCheckbox}
               isTypeCheckbox={isTypeCheckbox}

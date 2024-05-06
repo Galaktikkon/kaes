@@ -4,10 +4,9 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import UserSerializer, RegisterSerializer, GroupSerializer, SequenceSerializer
-from model.interval_generator import IntervalGenerator
-from model.chord_generator import ChordGenerator
-from model.extended_chord_generator import ExtendedChordGenerator
+from .serializers import UserSerializer, RegisterSerializer, GroupSerializer, SequenceSerializer, AnswearSerializer
+from model.sequence_generator import SequenceGenerator
+from model.answear_tester import AnswearTester
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -40,7 +39,7 @@ class ChordView(APIView):
         serializer_class = SequenceSerializer(data=request.data)
         if serializer_class.is_valid():
 
-            return Response(ChordGenerator(serializer_class.data).draw(), status=status.HTTP_200_OK)
+            return Response(SequenceGenerator(serializer_class.data).draw_triad(), status=status.HTTP_200_OK)
 
         return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -51,17 +50,27 @@ class IntervalView(APIView):
         serializer_class = SequenceSerializer(data=request.data)
         if serializer_class.is_valid():
 
-            return Response(IntervalGenerator(serializer_class.data).draw(), status=status.HTTP_200_OK)
+            return Response(SequenceGenerator(serializer_class.data).draw_interval(), status=status.HTTP_200_OK)
 
         return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ExtendedChordView(APIView):
+class SeventhChordView(APIView):
 
     def post(self, request, format=None):
         serializer_class = SequenceSerializer(data=request.data)
         if serializer_class.is_valid():
 
-            return Response(ExtendedChordGenerator(serializer_class.data).draw(), status=status.HTTP_200_OK)
+            return Response(SequenceGenerator(serializer_class.data).draw_seventh_chord(), status=status.HTTP_200_OK)
+
+        return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AnswearCheckView(APIView):
+    def post(self, request, format=None):
+        serializer_class = AnswearSerializer(data=request.data)
+        if serializer_class.is_valid():
+
+            return Response(AnswearTester(serializer_class.data).test_answear(), status=status.HTTP_200_OK)
 
         return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)

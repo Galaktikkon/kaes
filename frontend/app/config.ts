@@ -1,20 +1,64 @@
-const INTERVAL_TYPES: { [type: string]: string } = {
-  Unison: "U",
-  "Minor Second": "m2",
-  "Major Second": "M2",
-  "Minor Third": "m3",
-  "Major Third": "M3",
-  "Perfect Fourth": "P4",
-  Tritone: "TT",
-  "Perfect Fifth": "P5",
-  "Minor Sixth": "m6",
-  "Major Sixth": "M6",
-  "Minor Seventh": "m7",
-  "Major Seventh": "M7",
-  Octave: "P8",
+const SEQUENCE_TYPES: {
+  [sequence: string]: { [groupName: string]: { [type: string]: string } };
+} = {
+  Intervals: {
+    "Simple Intervals": {
+      Unison: "U",
+      "Minor Second": "m2",
+      "Major Second": "M2",
+      "Minor Third": "m3",
+      "Major Third": "M3",
+      "Perfect Fourth": "P4",
+      Tritone: "TT",
+      "Perfect Fifth": "P5",
+      "Minor Sixth": "m6",
+      "Major Sixth": "M6",
+      "Minor Seventh": "m7",
+      "Major Seventh": "M7",
+      Octave: "P8",
+    },
+  },
+  Triads: {
+    "Root Position": {
+      Major: "major",
+      Minor: "minor",
+      Diminished: "diminished",
+      Augmented: "augmented",
+    },
+    "First Inversion": {
+      Major: "major_6",
+      Minor: "minor_6",
+      Diminished: "diminished_6",
+    },
+    "Second Inversion": {
+      Major: "major_46",
+      Minor: "minor_46",
+      Diminished: "diminished_46",
+    },
+  },
+  "Seventh Chords": {
+    "Dominant Seventh": {
+      "Dominant Seventh - Root Position": "D7",
+      "Dominant Seventh - First Inversion": "D7_3",
+      "Dominant Seventh - Second Inversion": "D7_5",
+      "Dominant Seventh - Third Inversion": "D7_7",
+    },
+    Other: {
+      "Minor Seventh": "min7",
+      "Half Diminished Seventh": "m7b5",
+      "Diminished Seventh": "dim7",
+    },
+  },
 };
 
-const INTERVAL_GROUP_NAMES: string[] = ["Simple Intervals"] as const;
+const SEQUENCE_GROUP_NAMES: {
+  [sequence: string]: string[];
+} = {
+  Intervals: ["Simple Intervals"],
+  Triads: ["Root Position", "First Inversion", "Second Inversion"],
+  "Seventh Chords": ["Dominant Seventh", "Other"],
+};
+
 const INTERVALS_DEFAULT = {
   "Simple Intervals": [
     "Unison",
@@ -27,39 +71,16 @@ const INTERVALS_DEFAULT = {
   ],
 };
 
-const TRIAD_TYPES: { [type: string]: string } = {
-  Major: "major",
-  Minor: "minor",
-  Diminished: "diminished",
-  Augmented: "augmented",
-} as const;
-const TRIAD_GROUP_NAMES: { [type: string]: string } = {
-  "Root Position": "",
-  "First Inversion": "_6",
-  "Second Inversion": "_46",
-} as const;
 const TRIAD_DEFAULT = {
   "Root Position": ["Major", "Minor", "Diminished", "Augmented"],
 };
 
-const SEVEN_CHORDS_TYPES: { [type: string]: string } = {
-  "Dominant Seven": "D7",
-  "Minor Dominant Seven": "d7",
-  "Half Diminished Seventh": "hd7",
-  "Fully Diminished Seventh": "fd7",
-} as const;
-const SEVEN_CHORDS_GROUP_NAMES: { [type: string]: string } = {
-  "Root Position": "",
-  "First Inversion": "_3",
-  "Second Inversion": "_5",
-  "Third Inversion": "_7",
-} as const;
-const SEVEN_CHORDS_DEFAULT = {
-  "Root Position": [
-    "Dominant Seven",
-    "Minor Dominant Seven",
-    "Half Diminished Seventh",
-    "Fully Diminished Seventh",
+const SEVENTH_CHORDS_DEFAULT = {
+  "Dominant Seventh": [
+    "Dominant Seventh - Root Position",
+    "Dominant Seventh - First Inversion",
+    "Dominant Seventh - Second Inversion",
+    "Dominant Seventh - Third Inversion",
   ],
 };
 
@@ -85,14 +106,10 @@ const PIANO_KEYS = [
 ] as const;
 
 export {
-  INTERVAL_TYPES,
-  INTERVAL_GROUP_NAMES,
+  SEQUENCE_TYPES,
+  SEQUENCE_GROUP_NAMES,
   INTERVALS_DEFAULT,
-  TRIAD_TYPES,
-  TRIAD_GROUP_NAMES,
   TRIAD_DEFAULT,
-  SEVEN_CHORDS_TYPES,
-  SEVEN_CHORDS_GROUP_NAMES,
-  SEVEN_CHORDS_DEFAULT,
+  SEVENTH_CHORDS_DEFAULT,
   PIANO_KEYS,
 };

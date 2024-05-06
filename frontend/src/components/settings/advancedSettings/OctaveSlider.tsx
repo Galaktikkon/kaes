@@ -7,7 +7,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { Text } from "@chakra-ui/react";
-import GameSettings from "../../../state/Game";
+import game from "../../../state/Game";
 import { PIANO_KEYS } from "../../../../app/config";
 const OctaveSlider = () => {
   const [sliderValue, setSliderValue] = useState<[number, number]>([
@@ -25,7 +25,7 @@ const OctaveSlider = () => {
         step={1}
         onChange={(value) => {
           setSliderValue([value[0], value[1]]);
-          GameSettings.setGameSettings({
+          game.settings.setPlaySettings({
             octaveRange: [PIANO_KEYS[value[0]], PIANO_KEYS[value[1]]],
           });
         }}

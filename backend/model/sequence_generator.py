@@ -1,4 +1,7 @@
 from random import choice, randint
+from model.sequences.intervals import Intervals
+from model.sequences.triads import Triads
+from model.sequences.seventh_chords import SeventhChords
 
 
 class SequenceGenerator():
@@ -14,20 +17,28 @@ class SequenceGenerator():
             data['pitch_range_high'])-1]
         self.octave_low = int(data['pitch_range_low'][-1])
         self.octave_high = int(data['pitch_range_high'][-1])
+        self.sequences = data["sequence_types"]
 
-    def draw(self, sequences_to_draw, all_sequences):
-
-        drawn_sequence = choice(sequences_to_draw)
-
-        out = self.__get_sequence(
+    def draw_interval(self):
+        return self.__get_sequence(
             self.__SEMITONES[self.pitch_high],
             self.__SEMITONES[self.pitch_low],
-            all_sequences[drawn_sequence]
+            Intervals[choice(self.sequences)].value
         )
 
-        out['answear'] = drawn_sequence
+    def draw_triad(self):
+        return self.__get_sequence(
+            self.__SEMITONES[self.pitch_high],
+            self.__SEMITONES[self.pitch_low],
+            Triads[choice(self.sequences)].value
+        )
 
-        return out
+    def draw_seventh_chord(self):
+        return self.__get_sequence(
+            self.__SEMITONES[self.pitch_high],
+            self.__SEMITONES[self.pitch_low],
+            SeventhChords[choice(self.sequences)].value
+        )
 
     def __get_sequence(self, high, low, intervals):
 

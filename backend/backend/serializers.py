@@ -2,7 +2,8 @@ from django.contrib.auth.models import Group, User
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
-from .validators import pitch_validator, sequence_type_validator
+from model.sequences.sequences import Sequences
+from .validators import draw_range_validator, pitch_relation_validator, pitch_sequence_validator, pitch_validator, type_validator, sequence_types_validator
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -58,36 +59,6 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 class SequenceSerializer(serializers.Serializer):
 
-    __TONES = {
-        'C': 0, 'C#': 1, 'D': 2, 'D#': 3, 'E': 4, 'F': 5,
-        'F#': 6, 'G': 7, 'G#': 8, 'A': 9, 'A#': 10, 'B': 11
-    }
-
-    __SEQUENCE_TYPES = {
-        "interval": {
-            "U": [0], "m2": [1], "M2": [2], "m3": [3], "M3": [4], "P4": [5],
-            "TT": [6], "P5": [7], "m6": [8], "M6": [9], "m7": [10], "M7": [11], "P8": [12]
-        }, "triad": {
-            "minor": [3, 4], "major": [4, 3], "diminished": [3, 3], "augmented": [4, 4], "minor_6": [4, 5],
-            "major_6": [3, 5], "diminished_6": [3, 6], "minor_46": [5, 3], "major_46": [5, 4], "diminished_46": [6, 3],
-        }, "extended_chord": {
-            "D7": [4, 3, 3], "D7_3": [3, 3, 2], "D7_5": [3, 2, 4], "D7_7": [2, 4, 3]
-        },
-    }
-
-    def __sequence_types_validator(self, sequence_types, available_sequences):
-
-        errors = {}
-
-        if len(sequence_types) < 1:
-            errors.update({"sequence_types": "not enough sequences to draw"})
-
-        if any(item not in available_sequences for item in sequence_types):
-            errors.update({"sequence_types": "incorrect sequence format"})
-
-        if errors:
-            raise serializers.ValidationError(errors)
-
     def validate(self, attrs):
 
         pitch_range_low = attrs["pitch_range_low"]
@@ -95,24 +66,20 @@ class SequenceSerializer(serializers.Serializer):
         sequence_types = attrs["sequence_types"]
         type = attrs["type"]
 
-        self.__sequence_types_validator(
-            sequence_types, list(self.__SEQUENCE_TYPES[type])
+        sequence_types_validator(
+            sequence_types, list(Sequences.SEQUENCE_TYPES[type])
         )
 
-        if int(pitch_range_low[-1]) > int(pitch_range_high[-1]):
-            raise serializers.ValidationError(
-                {"incorrect pitch values": "lower pitch limit > higher pitch limit"}
-            )
+        pitch_relation_validator(pitch_range_low, pitch_range_high)
 
-        semitones = (int(pitch_range_high[-1]) - int(pitch_range_low[-1]))*12
-        pitch_name_high = pitch_range_high[:len(pitch_range_high)-1]
-        pitch_name_low = pitch_range_low[:len(pitch_range_low)-1]
-
-        for sequence in sequence_types:
-            if semitones - self.__TONES[pitch_name_low] + self.__TONES[pitch_name_high] - sum(self.__SEQUENCE_TYPES[type][sequence]) < 0:
-                raise serializers.ValidationError(
-                    f'cannot draw {sequence} chord from this pitch range'
-                )
+        draw_range_validator(
+            sequence_types,
+            pitch_range_low,
+            pitch_range_high,
+            Sequences.SEMITONES,
+            type,
+            Sequences.SEQUENCE_TYPES,
+        )
 
         return attrs
 
@@ -121,7 +88,7 @@ class SequenceSerializer(serializers.Serializer):
         validators=[lambda pitch_range_low: pitch_validator(
             pitch_range_low,
             "pitch_range_low",
-            SequenceSerializer.__TONES
+            list(Sequences.SEMITONES.keys())
         )]
     )
 
@@ -130,17 +97,50 @@ class SequenceSerializer(serializers.Serializer):
         validators=[lambda pitch_range_high: pitch_validator(
             pitch_range_high,
             "pitch_range_high",
-            SequenceSerializer.__TONES
+            list(Sequences.SEMITONES.keys())
         )]
     )
 
     type = serializers.CharField(
         required=True,
-        validators=[lambda type: sequence_type_validator(
-            type, list(SequenceSerializer.__SEQUENCE_TYPES.keys())
+        validators=[lambda type: type_validator(
+            type, list(Sequences.SEQUENCE_TYPES.keys())
         )]
     )
 
     sequence_types = serializers.ListField(
         required=True,
     )
+
+
+class AnswearSerializer(serializers.Serializer):
+
+    def validate(self, attrs):
+
+        sequence_type = attrs["sequence_type"]
+        answear_to_check = attrs["answear_to_check"]
+
+        sequence_types_validator(
+            [answear_to_check], list(Sequences.SEQUENCE_TYPES[sequence_type])
+        )
+
+        return attrs
+
+    sequence_type = serializers.CharField(
+        required=True,
+        validators=[lambda type: type_validator(
+            type,
+            list(Sequences.SEQUENCE_TYPES.keys())
+        )]
+    )
+
+    pitch_sequence = serializers.ListField(
+        required=True,
+        validators=[lambda pitch_sequence: pitch_sequence_validator(
+            pitch_sequence,
+            "pitch_sequence",
+            list(Sequences.SEMITONES.keys())
+        )]
+    )
+
+    answear_to_check = serializers.CharField(required=True, )

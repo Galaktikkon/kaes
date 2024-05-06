@@ -1,58 +1,65 @@
 "use client";
 
-import { Button, Container, Grid, GridItem, HStack } from "@chakra-ui/react";
+import {
+  Button,
+  Container,
+  Flex,
+  Grid,
+  GridItem,
+  HStack,
+} from "@chakra-ui/react";
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { runInAction } from "mobx";
 import Header from "@/src/components/Header";
-import GameSettings from "@/src/state/Game";
+import game from "@/src/state/Game";
 import GameButtons from "@/src/components/GameButtons";
 import {
-  SEVEN_CHORDS_DEFAULT,
-  SEVEN_CHORDS_GROUP_NAMES,
-  SEVEN_CHORDS_TYPES,
+  SEVENTH_CHORDS_DEFAULT,
   INTERVALS_DEFAULT,
-  INTERVAL_GROUP_NAMES,
-  INTERVAL_TYPES,
   TRIAD_DEFAULT,
-  TRIAD_GROUP_NAMES,
-  TRIAD_TYPES,
+  SEQUENCE_TYPES,
+  SEQUENCE_GROUP_NAMES,
 } from "./config";
+import GameInterface from "@/src/components/GameInterface/GameInterface";
 
 const Home = observer(() => {
   const [isMenu, setIsMenu] = useState(true);
   const [isIntervals, setIsIntervals] = useState(false);
   const [isTriads, setIsTriads] = useState(false);
-  const [isSevenChords, setIsSevenChords] = useState(false);
+  const [isSeventhChords, setIsSeventhChords] = useState(false);
 
   return (
-    <>
+    <Flex flexDirection={"column"} height={"100vh"}>
       <Header />
       <Container
-        size={"md"}
-        h={"100vh"}
+        maxW="100%"
         centerContent
         justifyContent={"center"}
+        alignItems={"center"}
+        alignSelf={"stretch"}
+        display={"flex"}
+        flex={1}
       >
         {isIntervals && (
           <GameButtons
             exerciseName="Intervals"
-            availableSequenceTypes={Object.keys(INTERVAL_TYPES)}
-            availableGroupTypes={INTERVAL_GROUP_NAMES}
+            availableSequenceTypes={SEQUENCE_TYPES["Intervals"]}
+            availableGroupTypes={SEQUENCE_GROUP_NAMES["Intervals"]}
           />
         )}
         {isTriads && (
           <GameButtons
             exerciseName="Triads"
-            availableSequenceTypes={Object.keys(TRIAD_TYPES)}
-            availableGroupTypes={Object.keys(TRIAD_GROUP_NAMES)}
+            availableSequenceTypes={SEQUENCE_TYPES["Triads"]}
+            availableGroupTypes={SEQUENCE_GROUP_NAMES["Triads"]}
           />
         )}
-        {isSevenChords && (
+        {isSeventhChords && (
           <GameButtons
-            exerciseName="SEVEN Chords"
-            availableSequenceTypes={Object.keys(SEVEN_CHORDS_TYPES)}
-            availableGroupTypes={Object.keys(SEVEN_CHORDS_GROUP_NAMES)}
+            exerciseName="Seventh Chords"
+            availableSequenceTypes={SEQUENCE_TYPES["Seventh Chords"]}
+            availableGroupTypes={SEQUENCE_GROUP_NAMES["Seventh Chords"]}
           />
         )}
         <Grid templateColumns="repeat(3, 1fr)" gap={6}>
@@ -69,9 +76,11 @@ const Home = observer(() => {
                   bgColor={"blueviolet"}
                   onClick={() => {
                     runInAction(() => {
-                      GameSettings.setGroupNames(INTERVAL_GROUP_NAMES);
-                      GameSettings.setExerciseName("Intervals");
-                      GameSettings.setSequenceTypes(
+                      game.settings.setGroupNames(
+                        SEQUENCE_GROUP_NAMES["Intervals"]
+                      );
+                      game.settings.setExerciseName("Intervals");
+                      game.settings.setSequenceTypes(
                         "Simple Intervals",
                         INTERVALS_DEFAULT["Simple Intervals"]
                       );
@@ -95,11 +104,11 @@ const Home = observer(() => {
                   bgColor={"green"}
                   onClick={() => {
                     runInAction(() => {
-                      GameSettings.setGroupNames(
-                        Object.keys(TRIAD_GROUP_NAMES)
+                      game.settings.setGroupNames(
+                        SEQUENCE_GROUP_NAMES["Triads"]
                       );
-                      GameSettings.setExerciseName("Triads");
-                      GameSettings.setSequenceTypes(
+                      game.settings.setExerciseName("Triads");
+                      game.settings.setSequenceTypes(
                         "Root Position",
                         TRIAD_DEFAULT["Root Position"]
                       );
@@ -124,48 +133,39 @@ const Home = observer(() => {
                   whiteSpace={"nowrap"}
                   onClick={() => {
                     runInAction(() => {
-                      GameSettings.setGroupNames(
-                        Object.keys(SEVEN_CHORDS_GROUP_NAMES)
+                      game.settings.setGroupNames(
+                        SEQUENCE_GROUP_NAMES["Seventh Chords"]
                       );
-                      GameSettings.setExerciseName("Seven Chords");
-                      GameSettings.setSequenceTypes(
-                        "Root Position",
-                        SEVEN_CHORDS_DEFAULT["Root Position"]
+                      game.settings.setExerciseName("Seventh Chords");
+                      game.settings.setSequenceTypes(
+                        "Dominant Seventh",
+                        SEVENTH_CHORDS_DEFAULT["Dominant Seventh"]
                       );
-                      setIsSevenChords(true);
+                      setIsSeventhChords(true);
                       setIsMenu(false);
                     });
                   }}
                 >
-                  Seven Chords
+                  Seventh Chords
                 </Button>
               </GridItem>
             </>
           )}
         </Grid>
-        {(isIntervals || isTriads || isSevenChords) && (
-          <HStack
-            padding={10}
-            justifyContent={"center"}
-            alignContent={"center"}
-            marginTop={"20%"}
-          >
-            <Button
-              onClick={() => {
-                setIsMenu(true);
-                setIsIntervals(false);
-                setIsTriads(false);
-                setIsSevenChords(false);
-              }}
-            >
-              EXIT
-            </Button>
-            <Button>SKIP</Button>
-            <Button>AGAIN</Button>
-          </HStack>
+        {(isIntervals || isTriads || isSeventhChords) && (
+          <GameInterface
+            exitFunction={() => {
+              setIsMenu(true);
+              setIsIntervals(false);
+              setIsTriads(false);
+              setIsSeventhChords(false);
+              game.setIsActive(false);
+              game.currentStats.clear();
+            }}
+          ></GameInterface>
         )}
       </Container>
-    </>
+    </Flex>
   );
 });
 
