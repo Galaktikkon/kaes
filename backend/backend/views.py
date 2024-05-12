@@ -4,9 +4,10 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import UserSerializer, RegisterSerializer, GroupSerializer, SequenceSerializer, AnswearSerializer
+from .serializers import UserSerializer, RegisterSerializer, GroupSerializer, SequenceSerializer, AnswearSerializer, UserStatisticsSerializer
 from model.sequence_generator import SequenceGenerator
 from model.answear_tester import AnswearTester
+import jwt
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -29,7 +30,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = [permissions.AllowAny]
     serializer_class = RegisterSerializer
 
 
@@ -74,3 +75,25 @@ class AnswearCheckView(APIView):
             return Response(AnswearTester(serializer_class.data).test_answear(), status=status.HTTP_200_OK)
 
         return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserStatisticsSave(generics.CreateAPIView):
+    serializer_class = UserStatisticsSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        print(request.headers)
+        auth_header = request.headers.get("Authorization")
+
+        if auth_header and auth_header.startswith('Bearer '):
+            token = auth_header.split()[1]
+
+            try:
+                jwt_data = jwt.decode(
+                    token, options={"verify_signature": False}
+                )
+                return Response(jwt_data)
+            except jwt.InvalidTokenError:
+                return Response({'error': 'Invalid token'}, status=400)
+        else:
+            return Response({'error': 'Authorization header is missing or malformed'}, status=400)
