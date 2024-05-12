@@ -2,7 +2,7 @@ from django.contrib.auth.models import Group, User
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
-from model.sequences.sequences import Sequences
+from backend.models import UserStatistics
 from .validators import draw_range_validator, pitch_relation_validator, pitch_sequence_validator, pitch_validator, type_validator, sequence_types_validator
 
 
@@ -16,6 +16,15 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Group
         fields = ['url', 'name']
+
+
+class UserStatisticsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserStatistics
+        fields = ["exercise_type", "group_type",
+                  "sequence_type", "note_duration",
+                  "instrument", "pitch_range",
+                  "result", "date"]
 
 
 class RegisterSerializer(serializers.ModelSerializer):
