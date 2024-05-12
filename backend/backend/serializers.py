@@ -2,8 +2,21 @@ from django.contrib.auth.models import Group, User
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
+from model.sequences.sequences import Sequence
 from backend.models import UserStatistics
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .validators import draw_range_validator, pitch_relation_validator, pitch_sequence_validator, pitch_validator, type_validator, sequence_types_validator
+
+
+class UserNameTokenObtainPairSerializer(TokenObtainPairSerializer):
+
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        token['name'] = user.username
+
+        return token
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -76,7 +89,7 @@ class SequenceSerializer(serializers.Serializer):
         type = attrs["type"]
 
         sequence_types_validator(
-            sequence_types, list(Sequences.SEQUENCE_TYPES[type])
+            sequence_types, list(Sequence.SEQUENCE_TYPES[type])
         )
 
         pitch_relation_validator(pitch_range_low, pitch_range_high)
@@ -85,9 +98,9 @@ class SequenceSerializer(serializers.Serializer):
             sequence_types,
             pitch_range_low,
             pitch_range_high,
-            Sequences.SEMITONES,
+            Sequence.SEMITONES,
             type,
-            Sequences.SEQUENCE_TYPES,
+            Sequence.SEQUENCE_TYPES,
         )
 
         return attrs
@@ -97,7 +110,7 @@ class SequenceSerializer(serializers.Serializer):
         validators=[lambda pitch_range_low: pitch_validator(
             pitch_range_low,
             "pitch_range_low",
-            list(Sequences.SEMITONES.keys())
+            list(Sequence.SEMITONES.keys())
         )]
     )
 
@@ -106,14 +119,14 @@ class SequenceSerializer(serializers.Serializer):
         validators=[lambda pitch_range_high: pitch_validator(
             pitch_range_high,
             "pitch_range_high",
-            list(Sequences.SEMITONES.keys())
+            list(Sequence.SEMITONES.keys())
         )]
     )
 
     type = serializers.CharField(
         required=True,
         validators=[lambda type: type_validator(
-            type, list(Sequences.SEQUENCE_TYPES.keys())
+            type, list(Sequence.SEQUENCE_TYPES.keys())
         )]
     )
 
@@ -130,7 +143,7 @@ class AnswearSerializer(serializers.Serializer):
         answear_to_check = attrs["answear_to_check"]
 
         sequence_types_validator(
-            [answear_to_check], list(Sequences.SEQUENCE_TYPES[sequence_type])
+            [answear_to_check], list(Sequence.SEQUENCE_TYPES[sequence_type])
         )
 
         return attrs
@@ -139,7 +152,7 @@ class AnswearSerializer(serializers.Serializer):
         required=True,
         validators=[lambda type: type_validator(
             type,
-            list(Sequences.SEQUENCE_TYPES.keys())
+            list(Sequence.SEQUENCE_TYPES.keys())
         )]
     )
 
@@ -148,7 +161,7 @@ class AnswearSerializer(serializers.Serializer):
         validators=[lambda pitch_sequence: pitch_sequence_validator(
             pitch_sequence,
             "pitch_sequence",
-            list(Sequences.SEMITONES.keys())
+            list(Sequence.SEMITONES.keys())
         )]
     )
 
