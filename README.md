@@ -38,10 +38,10 @@ tech: **DJANGO**
     * [X] ~~*moze przyjac wiele typow*~~ [2024-04-08]
 * [X] ~~*sprawdzanie odpowiedzi*~~ [2024-05-06]
   * [X] ~~*endpoint sprawdzajacy odpowiedz uzytkownika*~~ [2024-05-06]
-* [ ] zapisywanie statystyk uzytkownika do bazy
-  * [ ] endpoint do zapisywania odpowiedzi interwalow
-  * [ ] endpoint do zapisywania odpowiedzi trojdzwiekow
-  * [ ] endpoint do zapisywania odpowiedzi czterodzwiekow
+* [X] ~~*zapisywanie statystyk uzytkownika do bazy*~~ [2024-05-18]
+  * [X] ~~*endpoint do zapisywania odpowiedzi interwalow*~~ [2024-05-18]
+  * [X] ~~*endpoint do zapisywania odpowiedzi trojdzwiekow*~~ [2024-05-18]
+  * [X] ~~*endpoint do zapisywania odpowiedzi czterodzwiekow*~~ [2024-05-18]
   * [ ] DODATEK NA SAM KONIEC: zapis dla niezalogowanych poprzez UUID COOKIES
 * [X] ~~*rejestracja uzytkownika (email bez potwierdzenia, haslo)*~~ [2024-03-25]
 * [X] ~~*logowanie uzytkownika (zwracajace token JWT)*~~ [2024-03-25]
