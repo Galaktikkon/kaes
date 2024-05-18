@@ -1,55 +1,53 @@
 from random import choice, randint
-from model.sequences.intervals import Intervals
-from model.sequences.triads import Triads
-from model.sequences.seventh_chords import SeventhChords
+from model.utils.sequences import Sequences
+from model.utils.semitones import Semitones
 
 
-class SequenceGenerator():
-
-    # possible upgrade:  bidict module
-    __SEMITONES = {0: 'C', 1: 'C#', 2: 'D', 3: 'D#', 4: 'E', 5: 'F', 6: 'F#', 7: 'G', 8: 'G#', 9: 'A', 10: 'A#',
-                   11: 'B', 'C': 0, 'C#': 1, 'D': 2, 'D#': 3, 'E': 4, 'F': 5, 'F#': 6, 'G': 7, 'G#': 8, 'A': 9, 'A#': 10, 'B': 11}
+class SequenceGenerator:
 
     def __init__(self, data):
-        self.pitch_low = data['pitch_range_low'][:len(
-            data['pitch_range_low'])-1]
-        self.pitch_high = data['pitch_range_high'][:len(
-            data['pitch_range_high'])-1]
-        self.octave_low = int(data['pitch_range_low'][-1])
-        self.octave_high = int(data['pitch_range_high'][-1])
-        self.sequences = data["sequence_types"]
+        self.pitch_range_low = data['pitch_range_low']
+        self.pitch_range_high = data['pitch_range_high']
+        self.sequence_types = data["sequence_types"]
+
+        self.__SEMITONES = Semitones.get_semitones()
 
     def draw_interval(self):
         return self.__get_sequence(
-            self.__SEMITONES[self.pitch_high],
-            self.__SEMITONES[self.pitch_low],
-            Intervals[choice(self.sequences)].value
+            self.pitch_range_low,
+            self.pitch_range_high,
+            Sequences.get_type_dict("intervals")[choice(self.sequence_types)]
         )
 
     def draw_triad(self):
         return self.__get_sequence(
-            self.__SEMITONES[self.pitch_high],
-            self.__SEMITONES[self.pitch_low],
-            Triads[choice(self.sequences)].value
+            self.pitch_range_low,
+            self.pitch_range_high,
+            Sequences.get_type_dict("triads")[choice(self.sequence_types)]
         )
 
     def draw_seventh_chord(self):
         return self.__get_sequence(
-            self.__SEMITONES[self.pitch_high],
-            self.__SEMITONES[self.pitch_low],
-            SeventhChords[choice(self.sequences)].value
+            self.pitch_range_low,
+            self.pitch_range_high,
+            Sequences.get_type_dict("seventh_chords")[
+                choice(self.sequence_types)]
         )
 
-    def __get_sequence(self, high, low, intervals):
+    def __get_sequence(self, pitch_range_low, pitch_range_high, intervals):
 
-        draw = self.__draw_root_pitch(high, low, intervals)
+        pitch_low, octave_low = self.__split_pitch_range(pitch_range_low)
 
-        root = (draw + low) % 12
+        draw = self.__draw_root_pitch(
+            intervals, pitch_range_low, pitch_range_high
+        )
 
-        first = self.__SEMITONES[root]
-        octave_no = self.octave_low
+        root = (draw + self.__SEMITONES[pitch_low]) % 12
 
-        if self.__SEMITONES[self.pitch_low] + draw > 11:
+        first = self.__SEMITONES.inverse[root]
+        octave_no = octave_low
+
+        if self.__SEMITONES[pitch_low] + draw > 11:
             octave_no += 1
 
         sequence = {'sequence': [first+str(octave_no)]}
@@ -60,18 +58,21 @@ class SequenceGenerator():
             octave_no = octave_no+1 if ptr % 12 + interval > 11 else octave_no
             ptr += interval
             sequence['sequence'].append(
-                self.__SEMITONES[(ptr) % 12] + str(octave_no)
+                self.__SEMITONES.inverse[(ptr) % 12] + str(octave_no)
             )
 
         return sequence
 
-    def __draw_root_pitch(self, high, low, intervals):
+    def __draw_root_pitch(self, intervals, pitch_range_low, pitch_range_high):
 
-        octaves = self.octave_high - self.octave_low
-
-        semitone_count = self.__get_semitone_count(high, low, octaves*12)
+        semitone_count = Semitones.get_semitone_count(
+            pitch_range_low,
+            pitch_range_high
+        )
 
         return randint(0, semitone_count - sum(intervals))
 
-    def __get_semitone_count(self, high, low, semitones):
-        return semitones - low + high
+    def __split_pitch_range(self, pitch_range: str):
+        octave = int(pitch_range[len(pitch_range)-1])
+        pitch = pitch_range[:len(pitch_range)-1]
+        return pitch, octave

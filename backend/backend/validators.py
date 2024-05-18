@@ -54,14 +54,14 @@ def pitch_relation_validator(pitch_range_low, pitch_range_high):
         )
 
 
-def draw_range_validator(sequence_types, pitch_range_low, pitch_range_high, tones, type, available_types):
+def draw_range_validator(sequence_types, pitch_range_low, pitch_range_high, tones, available_types):
 
     semitones = (int(pitch_range_high[-1]) - int(pitch_range_low[-1]))*12
     pitch_name_high = pitch_range_high[:len(pitch_range_high)-1]
     pitch_name_low = pitch_range_low[:len(pitch_range_low)-1]
 
     for sequence in sequence_types:
-        if semitones - tones[pitch_name_low] + tones[pitch_name_high] - sum(available_types[type][sequence]) < 0:
+        if semitones - tones[pitch_name_low] + tones[pitch_name_high] - sum(available_types[sequence]) < 0:
             raise serializers.ValidationError(
                 f'cannot draw {sequence} chord from this pitch range'
             )
