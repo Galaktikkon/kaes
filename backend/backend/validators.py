@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.contrib.auth.models import User
 
 
 def pitch_validator(pitch, type, tones):
@@ -65,3 +66,21 @@ def draw_range_validator(sequence_types, pitch_range_low, pitch_range_high, tone
             raise serializers.ValidationError(
                 f'cannot draw {sequence} chord from this pitch range'
             )
+
+
+def note_duration_validator(note_duration):
+    note_durations = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
+    if note_duration not in note_durations:
+        raise serializers.ValidationError(
+            f'Invalid note duration! Available note durations: {
+                note_durations
+            }'
+        )
+
+
+def user_id_validator(user_id):
+    if not User.objects.filter(id=user_id).exists():
+
+        raise serializers.ValidationError(
+            f'User of id={user_id} does not exist!'
+        )
