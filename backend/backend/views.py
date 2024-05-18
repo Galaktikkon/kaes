@@ -7,7 +7,6 @@ from rest_framework import status
 from .serializers import UserSerializer, RegisterSerializer, GroupSerializer, SequenceSerializer, AnswearSerializer, UserStatisticsSerializer
 from model.sequence_generator import SequenceGenerator
 from model.answear_tester import AnswearTester
-import jwt
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -78,22 +77,16 @@ class AnswearCheckView(APIView):
 
 
 class UserStatisticsSave(generics.CreateAPIView):
-    serializer_class = UserStatisticsSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
-        print(request.headers)
-        auth_header = request.headers.get("Authorization")
 
-        if auth_header and auth_header.startswith('Bearer '):
-            token = auth_header.split()[1]
+        data = request.data.copy()
+        data['user'] = request.user.id
 
-            try:
-                jwt_data = jwt.decode(
-                    token, options={"verify_signature": False}
-                )
-                return Response(jwt_data)
-            except jwt.InvalidTokenError:
-                return Response({'error': 'Invalid token'}, status=400)
-        else:
-            return Response({'error': 'Authorization header is missing or malformed'}, status=400)
+        serializer_class = UserStatisticsSerializer(data=data)
+        if serializer_class.is_valid():
+            serializer_class.save()
+            return Response(request.data)
+
+        return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
