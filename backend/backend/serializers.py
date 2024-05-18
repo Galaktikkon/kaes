@@ -4,7 +4,20 @@ from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 from model.utils.sequences import Sequences
 from model.utils.semitones import Semitones
-from .validators import draw_range_validator, pitch_relation_validator, pitch_sequence_validator, pitch_validator, type_validator, sequence_types_validator
+from backend.models import UserStatistics
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from .validators import draw_range_validator, note_duration_validator, pitch_relation_validator, pitch_sequence_validator, pitch_validator, type_validator, sequence_types_validator, user_id_validator
+
+
+class UserNameTokenObtainPairSerializer(TokenObtainPairSerializer):
+
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        token['name'] = user.username
+
+        return token
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -17,6 +30,66 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Group
         fields = ['url', 'name']
+
+
+class UserStatisticsSerializer(serializers.ModelSerializer):
+
+    exercise_type = serializers.CharField(
+        required=True,
+        validators=[lambda exercise_type: type_validator(
+            exercise_type,
+            Sequences.get_available_group_types())
+        ]
+    )
+
+    group_type = serializers.CharField(
+        required=True,
+    )
+
+    note_duration = serializers.FloatField(
+        required=True,
+        validators=[note_duration_validator]
+    )
+
+    instrument = serializers.CharField(
+        required=True,
+    )
+
+    pitch_range = serializers.ListField(
+        child=serializers.CharField(
+            max_length=3
+        ),
+        max_length=2,
+        required=True,
+        validators=[lambda pitch_range: pitch_sequence_validator(
+            pitch_range,
+            "pitch_range",
+            Semitones.get_semitones()
+        )]
+    )
+
+    result = serializers.BooleanField(required=True)
+
+    class Meta:
+        model = UserStatistics
+        fields = ["exercise_type", "group_type",
+                  "sequence_type", "note_duration",
+                  "instrument", "pitch_range",
+                  "result", "date", "user"]
+
+    def validate(self, attrs):
+
+        sequence_type = attrs["sequence_type"]
+        exercise_type = attrs["exercise_type"]
+        user_id = attrs["user"].id
+
+        sequence_types_validator(
+            [sequence_type], Sequences.get_type_dict(exercise_type)
+        )
+
+        user_id_validator(user_id)
+
+        return attrs
 
 
 class RegisterSerializer(serializers.ModelSerializer):

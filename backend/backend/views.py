@@ -4,7 +4,7 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import UserSerializer, RegisterSerializer, GroupSerializer, SequenceSerializer, AnswearSerializer
+from .serializers import UserSerializer, RegisterSerializer, GroupSerializer, SequenceSerializer, AnswearSerializer, UserStatisticsSerializer
 from model.sequence_generator import SequenceGenerator
 from model.answear_tester import AnswearTester
 
@@ -29,7 +29,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = [permissions.AllowAny]
     serializer_class = RegisterSerializer
 
 
@@ -72,5 +72,21 @@ class AnswearCheckView(APIView):
         if serializer_class.is_valid():
 
             return Response(AnswearTester(serializer_class.data).test_answear(), status=status.HTTP_200_OK)
+
+        return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserStatisticsSave(generics.CreateAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data.copy()
+        data['user'] = request.user.id
+
+        serializer_class = UserStatisticsSerializer(data=data)
+        if serializer_class.is_valid():
+            serializer_class.save()
+            return Response(request.data)
 
         return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
