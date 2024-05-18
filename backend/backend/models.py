@@ -8,7 +8,7 @@ class UserStatistics(models.Model):
     exercise_type = models.CharField()
     group_type = models.CharField()
     sequence_type = models.CharField()
-    note_duration = models.PositiveIntegerField()
+    note_duration = models.FloatField()
     instrument = models.CharField()
     pitch_range = fields.ArrayField(models.TextField())
     result = models.BooleanField()
