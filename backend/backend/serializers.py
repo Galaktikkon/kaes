@@ -6,7 +6,7 @@ from model.utils.sequences import Sequences
 from model.utils.semitones import Semitones
 from backend.models import UserStatistics
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .validators import draw_range_validator, note_duration_validator, pitch_relation_validator, pitch_sequence_validator, pitch_validator, type_validator, sequence_types_validator, user_id_validator
+from .validators import date_range_validator, draw_range_validator, note_duration_validator, pitch_relation_validator, pitch_sequence_validator, pitch_validator, type_validator, sequence_types_validator, user_id_validator
 
 
 class UserNameTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -217,3 +217,29 @@ class AnswearSerializer(serializers.Serializer):
     )
 
     answear_to_check = serializers.CharField(required=True, )
+
+
+class UserStatsQuerySerializer(serializers.Serializer):
+    start_date = serializers.DateField(required=False)
+    end_date = serializers.DateField(required=False)
+    exercise_type = serializers.CharField(
+        required=False,
+        validators=[lambda group_type: type_validator(
+            group_type,
+            Sequences.get_available_group_types()
+        )]
+    )
+    instrument = serializers.CharField(required=False)
+    note_duration = serializers.FloatField(
+        required=False,
+        validators=[note_duration_validator]
+    )
+
+    def validate(self, attrs):
+
+        start_date = attrs.get("start_date")
+        end_date = attrs.get("end_date")
+        if start_date and end_date:
+            date_range_validator(start_date, end_date)
+
+        return attrs

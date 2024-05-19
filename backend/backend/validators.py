@@ -84,3 +84,8 @@ def user_id_validator(user_id):
         raise serializers.ValidationError(
             f'User of id={user_id} does not exist!'
         )
+
+
+def date_range_validator(start_date, end_date):
+    if start_date > end_date:
+        raise serializers.ValidationError("Start date > End date")
