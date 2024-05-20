@@ -36,7 +36,7 @@ class SequenceGenerator:
 
     def __get_sequence(self, pitch_range_low, pitch_range_high, intervals):
 
-        pitch_low, octave_low = self.__split_pitch_range(pitch_range_low)
+        pitch_low, octave_low = Semitones.split_pitch_range(pitch_range_low)
 
         draw = self.__draw_root_pitch(
             intervals, pitch_range_low, pitch_range_high
@@ -71,8 +71,3 @@ class SequenceGenerator:
         )
 
         return randint(0, semitone_count - sum(intervals))
-
-    def __split_pitch_range(self, pitch_range: str):
-        octave = int(pitch_range[len(pitch_range)-1])
-        pitch = pitch_range[:len(pitch_range)-1]
-        return pitch, octave

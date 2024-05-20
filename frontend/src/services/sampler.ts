@@ -1,5 +1,5 @@
 import { Sampler } from "tone";
-import game from "../state/Game";
+import game from "../State/Game";
 
 const sampler: Sampler = new Sampler({
   urls: {

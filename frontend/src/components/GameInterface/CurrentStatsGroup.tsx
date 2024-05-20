@@ -1,6 +1,6 @@
 "use client";
 
-import game from "@/src/state/Game";
+import game from "@/src/State/Game";
 import {
   Center,
   Divider,

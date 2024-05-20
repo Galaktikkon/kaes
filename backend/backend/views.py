@@ -1,11 +1,13 @@
+import json
+import os
 from django.contrib.auth.models import Group, User
-from django.db.models import Q
-from rest_framework.decorators import action
 from rest_framework import permissions, viewsets
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+
+from model.utils.semitones import Semitones
 from .serializers import UserSerializer, RegisterSerializer, GroupSerializer, SequenceSerializer, AnswearSerializer, UserStatsSerializer, UserStatsQuerySerializer
 from model.sequence_generator import SequenceGenerator
 from model.answear_tester import AnswearTester
@@ -81,7 +83,7 @@ class AnswearCheckView(generics.CreateAPIView):
 
         if answear_parameters_serializer_class.is_valid():
 
-            result = AnswearTester(
+            result, correct_answear = AnswearTester(
                 answear_parameters_serializer_class.data
             ).test_answear()
 
@@ -89,6 +91,7 @@ class AnswearCheckView(generics.CreateAPIView):
                 data = request.data.copy()
                 data["user"] = request.user.id
                 data["result"] = result["result"]
+                data["sequence_type"] = correct_answear
                 del data["pitch_sequence"]
                 del data["answear_to_check"]
 
@@ -149,3 +152,33 @@ class UserStatsView(APIView):
             return Response({"data": RechartsDataTransformer.get_transformed_data(user_stats_serializer_class.data)})
 
         return Response(query_params_serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class LoadConfigView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, _):
+
+        path = os.path.abspath(
+            os.path.join(
+                os.path.dirname(__file__), '..', "config"
+            )
+        )
+
+        with open(os.path.join(path, "config.json"), "r") as f:
+
+            data = json.load(f)
+
+            instruments = data["Instruments"]["Types"]
+
+            for instrument in instruments:
+
+                pitch_range_low = instruments[instrument][0]
+                pitch_range_high = instruments[instrument][1]
+
+                scale = Semitones.generate_scale(
+                    pitch_range_low, pitch_range_high)
+
+                data["Instruments"]["Ranges"][instrument] = scale
+
+        return Response(data)

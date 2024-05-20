@@ -1,7 +1,7 @@
 "use client";
 
-import { playQuestion } from "@/src/services/game";
-import game from "@/src/state/Game";
+import { playQuestion } from "@/src/Services/game";
+import game from "@/src/State/Game";
 import { Button } from "@chakra-ui/react";
 import { observer } from "mobx-react";
 

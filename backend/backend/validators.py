@@ -1,5 +1,7 @@
-from rest_framework import serializers
+from rest_framework.serializers import ValidationError
 from django.contrib.auth.models import User
+
+from model.utils.semitones import Semitones
 
 
 def pitch_validator(pitch, type, tones):
@@ -14,7 +16,7 @@ def pitch_validator(pitch, type, tones):
         errors.update({type: "octave range is out of bounds"})
 
     if errors:
-        raise serializers.ValidationError(errors)
+        raise ValidationError(errors)
 
 
 def pitch_sequence_validator(pitch_sequence, type, tones):
@@ -24,7 +26,7 @@ def pitch_sequence_validator(pitch_sequence, type, tones):
 
 def type_validator(type, avaialable_sequence_types):
     if type not in avaialable_sequence_types:
-        raise serializers.ValidationError(
+        raise ValidationError(
             {
                 type:
                     f'incorrect sequence type, available sequence types : {
@@ -45,12 +47,16 @@ def sequence_types_validator(sequence_types, available_sequences):
         errors.update({"sequence_types": "incorrect sequence format"})
 
     if errors:
-        raise serializers.ValidationError(errors)
+        raise ValidationError(errors)
 
 
-def pitch_relation_validator(pitch_range_low, pitch_range_high):
-    if int(pitch_range_low[-1]) > int(pitch_range_high[-1]):
-        raise serializers.ValidationError(
+def pitch_relation_validator(pitch_range_low, pitch_range_high, tones):
+
+    pitch_low, octave_low = Semitones.split_pitch_range(pitch_range_low)
+    pitch_high, octave_high = Semitones.split_pitch_range(pitch_range_high)
+
+    if octave_low > octave_high or (octave_low == octave_high and tones.inverse[pitch_low] > tones.inverse[pitch_high]):
+        raise ValidationError(
             {"incorrect pitch values": "lower pitch limit > higher pitch limit"}
         )
 
@@ -63,7 +69,7 @@ def draw_range_validator(sequence_types, pitch_range_low, pitch_range_high, tone
 
     for sequence in sequence_types:
         if semitones - tones[pitch_name_low] + tones[pitch_name_high] - sum(available_types[sequence]) < 0:
-            raise serializers.ValidationError(
+            raise ValidationError(
                 f'cannot draw {sequence} chord from this pitch range'
             )
 
@@ -71,7 +77,7 @@ def draw_range_validator(sequence_types, pitch_range_low, pitch_range_high, tone
 def note_duration_validator(note_duration):
     note_durations = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
     if note_duration not in note_durations:
-        raise serializers.ValidationError(
+        raise ValidationError(
             f'Invalid note duration! Available note durations: {
                 note_durations
             }'
@@ -81,11 +87,11 @@ def note_duration_validator(note_duration):
 def user_id_validator(user_id):
     if not User.objects.filter(id=user_id).exists():
 
-        raise serializers.ValidationError(
+        raise ValidationError(
             f'User of id={user_id} does not exist!'
         )
 
 
 def date_range_validator(start_date, end_date):
     if start_date > end_date:
-        raise serializers.ValidationError("Start date > End date")
+        raise ValidationError("Start date > End date")

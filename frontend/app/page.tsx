@@ -1,34 +1,21 @@
 "use client";
 
-import {
-  Button,
-  Container,
-  Flex,
-  Grid,
-  GridItem,
-  HStack,
-} from "@chakra-ui/react";
-import { useState } from "react";
+import { Button, Container, Flex, Grid, GridItem } from "@chakra-ui/react";
+import { useContext, useState } from "react";
 import { observer } from "mobx-react";
 import { runInAction } from "mobx";
 import Header from "@/src/components/Header";
-import game from "@/src/state/Game";
+import game from "@/src/State/Game";
 import GameButtons from "@/src/components/GameButtons";
-import {
-  SEVENTH_CHORDS_DEFAULT,
-  INTERVALS_DEFAULT,
-  TRIAD_DEFAULT,
-  SEQUENCE_TYPES,
-  SEQUENCE_GROUP_NAMES,
-} from "./config";
 import GameInterface from "@/src/components/GameInterface/GameInterface";
+import { useConfigContext } from "@/app/configProvider";
 
 const Home = observer(() => {
   const [isMenu, setIsMenu] = useState(true);
   const [isIntervals, setIsIntervals] = useState(false);
   const [isTriads, setIsTriads] = useState(false);
   const [isSeventhChords, setIsSeventhChords] = useState(false);
-
+  const config = useConfigContext();
   return (
     <Flex flexDirection={"column"} height={"100vh"}>
       <Header />
@@ -44,22 +31,24 @@ const Home = observer(() => {
         {isIntervals && (
           <GameButtons
             exerciseName="Intervals"
-            availableSequenceTypes={SEQUENCE_TYPES["Intervals"]}
-            availableGroupTypes={SEQUENCE_GROUP_NAMES["Intervals"]}
+            availableSequenceTypes={config["Exercise Types"]["Intervals"]}
+            availableGroupTypes={config["Exercise group names"]["Intervals"]}
           />
         )}
         {isTriads && (
           <GameButtons
             exerciseName="Triads"
-            availableSequenceTypes={SEQUENCE_TYPES["Triads"]}
-            availableGroupTypes={SEQUENCE_GROUP_NAMES["Triads"]}
+            availableSequenceTypes={config["Exercise Types"]["Triads"]}
+            availableGroupTypes={config["Exercise group names"]["Triads"]}
           />
         )}
         {isSeventhChords && (
           <GameButtons
             exerciseName="Seventh Chords"
-            availableSequenceTypes={SEQUENCE_TYPES["Seventh Chords"]}
-            availableGroupTypes={SEQUENCE_GROUP_NAMES["Seventh Chords"]}
+            availableSequenceTypes={config["Exercise Types"]["Seventh Chords"]}
+            availableGroupTypes={
+              config["Exercise group names"]["Seventh Chords"]
+            }
           />
         )}
         <Grid templateColumns="repeat(3, 1fr)" gap={6}>
@@ -77,12 +66,14 @@ const Home = observer(() => {
                   onClick={() => {
                     runInAction(() => {
                       game.settings.setGroupNames(
-                        SEQUENCE_GROUP_NAMES["Intervals"]
+                        config["Exercise group names"]["Intervals"]
                       );
                       game.settings.setExerciseName("Intervals");
                       game.settings.setSequenceTypes(
                         "Simple Intervals",
-                        INTERVALS_DEFAULT["Simple Intervals"]
+                        config["Default Settings"]["Intervals default"][
+                          "Simple Intervals"
+                        ]
                       );
                       setIsIntervals(true);
                       setIsMenu(false);
@@ -105,12 +96,14 @@ const Home = observer(() => {
                   onClick={() => {
                     runInAction(() => {
                       game.settings.setGroupNames(
-                        SEQUENCE_GROUP_NAMES["Triads"]
+                        config["Exercise group names"]["Triads"]
                       );
                       game.settings.setExerciseName("Triads");
                       game.settings.setSequenceTypes(
                         "Root Position",
-                        TRIAD_DEFAULT["Root Position"]
+                        config["Default Settings"]["Triads default"][
+                          "Root Position"
+                        ]
                       );
                       setIsTriads(true);
                       setIsMenu(false);
@@ -134,12 +127,14 @@ const Home = observer(() => {
                   onClick={() => {
                     runInAction(() => {
                       game.settings.setGroupNames(
-                        SEQUENCE_GROUP_NAMES["Seventh Chords"]
+                        config["Exercise group names"]["Seventh Chords"]
                       );
                       game.settings.setExerciseName("Seventh Chords");
                       game.settings.setSequenceTypes(
                         "Dominant Seventh",
-                        SEVENTH_CHORDS_DEFAULT["Dominant Seventh"]
+                        config["Default Settings"]["Seventh chords default"][
+                          "Dominant Seventh"
+                        ]
                       );
                       setIsSeventhChords(true);
                       setIsMenu(false);

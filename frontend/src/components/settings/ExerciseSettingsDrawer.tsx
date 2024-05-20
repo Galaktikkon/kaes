@@ -16,7 +16,7 @@ import React from "react";
 import { SettingsIcon } from "@chakra-ui/icons";
 import AdvancedSettingsDropdown from "./AdvancedSettings/AdvancedSettingsDropdown";
 import SequenceTypesCheckboxes from "./Checkboxes/SequenceTypesCheckboxes";
-import game from "@/src/state/Game";
+import game from "@/src/State/Game";
 
 interface ExerciseSettingsDrawerProps {
   exerciseName: string;

@@ -1,5 +1,5 @@
 import { loaded } from "tone";
-import game from "../state/Game";
+import game from "../State/Game";
 import sampler from "./sampler";
 
 const playQuestion = (sequence: string[]) => {
@@ -15,24 +15,24 @@ export type sequenceRequest = {
   pitch_range_low: string;
   pitch_range_high: string;
   sequence_types: string[];
-  type: string;
+  group_type: string;
 };
 
 const fetchSequence = async ({
   pitch_range_low,
   pitch_range_high,
   sequence_types,
-  type,
+  group_type,
 }: sequenceRequest): Promise<{ sequence: string[] }> => {
   const response = await fetch(
-    process.env.NEXT_PUBLIC_API_HOST + "/api/" + type + "/",
+    process.env.NEXT_PUBLIC_API_HOST + "/api/" + group_type + "/",
     {
       method: "POST",
       body: JSON.stringify({
-        pitch_range_low: pitch_range_low,
-        pitch_range_high: pitch_range_high,
-        sequence_types: sequence_types,
-        type: type,
+        pitch_range_low,
+        pitch_range_high,
+        sequence_types,
+        group_type,
       }),
       headers: { "Content-Type": "application/json" },
     }
@@ -48,26 +48,43 @@ const fetchSequence = async ({
 };
 
 export type answearRequest = {
-  sequence_type: string;
   pitch_sequence: string[];
   answear_to_check: string;
+  exercise_type: string;
+  group_type: string;
+  note_duration: number;
+  instrument: string;
+  pitch_range: [string, string];
+  token: string;
 };
 
 const fetchAnswear = async ({
-  sequence_type,
   pitch_sequence,
   answear_to_check,
+  exercise_type,
+  group_type,
+  note_duration,
+  instrument,
+  pitch_range,
+  token,
 }: answearRequest): Promise<{ result: string }> => {
   const response = await fetch(
     process.env.NEXT_PUBLIC_API_HOST + "/api/check_answear/",
     {
       method: "POST",
       body: JSON.stringify({
-        sequence_type: sequence_type.toLowerCase().replace(" ", "_"),
-        pitch_sequence: pitch_sequence,
-        answear_to_check: answear_to_check,
+        pitch_sequence,
+        answear_to_check,
+        exercise_type: exercise_type.toLowerCase().replace(" ", "_"),
+        group_type,
+        note_duration,
+        instrument,
+        pitch_range,
       }),
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
     }
   );
 

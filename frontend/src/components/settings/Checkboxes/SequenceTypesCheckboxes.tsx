@@ -2,7 +2,7 @@
 import { HStack, VStack } from "@chakra-ui/react";
 import { Checkbox } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import game from "../../../state/Game";
+import game from "../../../State/Game";
 import GroupTypesCheckboxes from "./GroupTypesCheckboxes";
 
 interface SequenceTypesCheckboxesProps {

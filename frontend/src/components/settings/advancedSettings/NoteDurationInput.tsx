@@ -7,7 +7,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import game from "../../../state/Game";
+import game from "../../../State/Game";
 const NoteDurationInput = () => {
   return (
     <Stack padding={5}>
