@@ -32,8 +32,7 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'name']
 
 
-class UserStatisticsSerializer(serializers.ModelSerializer):
-
+class AnswearParametersSerializerMixin(serializers.Serializer):
     exercise_type = serializers.CharField(
         required=True,
         validators=[lambda exercise_type: type_validator(
@@ -67,6 +66,9 @@ class UserStatisticsSerializer(serializers.ModelSerializer):
             Semitones.get_semitones()
         )]
     )
+
+
+class UserStatsSerializer(serializers.ModelSerializer, AnswearParametersSerializerMixin):
 
     result = serializers.BooleanField(required=True)
 
@@ -186,26 +188,7 @@ class SequenceSerializer(serializers.Serializer):
     )
 
 
-class AnswearSerializer(serializers.Serializer):
-
-    def validate(self, attrs):
-
-        group_type = attrs["group_type"]
-        answear_to_check = attrs["answear_to_check"]
-
-        sequence_types_validator(
-            [answear_to_check], Sequences.get_type_dict(group_type)
-        )
-
-        return attrs
-
-    group_type = serializers.CharField(
-        required=True,
-        validators=[lambda group_type: type_validator(
-            group_type,
-            Sequences.get_available_group_types()
-        )]
-    )
+class AnswearSerializer(AnswearParametersSerializerMixin, serializers.Serializer):
 
     pitch_sequence = serializers.ListField(
         required=True,
@@ -217,6 +200,17 @@ class AnswearSerializer(serializers.Serializer):
     )
 
     answear_to_check = serializers.CharField(required=True, )
+
+    def validate(self, attrs):
+
+        exercise_type = attrs["exercise_type"]
+        answear_to_check = attrs["answear_to_check"]
+
+        sequence_types_validator(
+            [answear_to_check], Sequences.get_type_dict(exercise_type)
+        )
+
+        return attrs
 
 
 class UserStatsQuerySerializer(serializers.Serializer):
