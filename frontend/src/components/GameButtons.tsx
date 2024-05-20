@@ -2,11 +2,13 @@
 
 import { Button, Flex, HStack, Spacer, Grid, useToast } from "@chakra-ui/react";
 import { observer } from "mobx-react";
-import game from "../state/Game";
+import game from "../State/Game";
 import ExerciseSettingsDrawer from "./settings/ExerciseSettingsDrawer";
 import { Fragment } from "react";
-import { fetchAnswear, getNewQuestion } from "../services/game";
-import { SEQUENCE_TYPES } from "@/app/config";
+import { fetchAnswear, getNewQuestion } from "../Services/game";
+import { useConfigContext } from "@/app/configProvider";
+import { group } from "console";
+import { useSession } from "next-auth/react";
 
 interface GameButtonsProps {
   exerciseName: string;
@@ -22,13 +24,24 @@ const GameButtons = observer(
   }: GameButtonsProps) => {
     const toast = useToast();
 
+    const session = useSession();
+
+    const configData = useConfigContext();
+
     const handleOnClick = (type: string, groupName: string) => {
       game.isActive
         ? fetchAnswear({
-            sequence_type: game.settings.exercise.name,
             pitch_sequence: game.currentQuestion,
             answear_to_check:
-              SEQUENCE_TYPES[game.settings.exercise.name][groupName][type],
+              configData["Exercise Types"][game.settings.exercise.name][
+                groupName
+              ][type],
+            exercise_type: game.settings.exercise.name,
+            group_type: groupName,
+            note_duration: game.settings.playSettings.noteDuration,
+            instrument: game.settings.playSettings.instrument,
+            pitch_range: game.settings.playSettings.octaveRange,
+            token: session.data?.user.access as string,
           })
             .then((response) => {
               response.result
