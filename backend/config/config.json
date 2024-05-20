@@ -1,0 +1,94 @@
+{
+  "Exercise Types": {
+    "Intervals": {
+      "Simple Intervals": {
+        "Unison": "U",
+        "Minor Second": "m2",
+        "Major Second": "M2",
+        "Minor Third": "m3",
+        "Major Third": "M3",
+        "Perfect Fourth": "P4",
+        "Tritone": "TT",
+        "Perfect Fifth": "P5",
+        "Minor Sixth": "m6",
+        "Major Sixth": "M6",
+        "Minor Seventh": "m7",
+        "Major Seventh": "M7",
+        "Octave": "P8"
+      }
+    },
+    "Triads": {
+      "Root Position": {
+        "Major": "major",
+        "Minor": "minor",
+        "Diminished": "diminished",
+        "Augmented": "augmented"
+      },
+      "First Inversion": {
+        "Major": "major_6",
+        "Minor": "minor_6",
+        "Diminished": "diminished_6"
+      },
+      "Second Inversion": {
+        "Major": "major_46",
+        "Minor": "minor_46",
+        "Diminished": "diminished_46"
+      }
+    },
+    "Seventh Chords": {
+      "Dominant Seventh": {
+        "Dominant Seventh - Root Position": "D7",
+        "Dominant Seventh - First Inversion": "D7_3",
+        "Dominant Seventh - Second Inversion": "D7_5",
+        "Dominant Seventh - Third Inversion": "D7_7"
+      },
+      "Other": {
+        "Minor Seventh": "min7",
+        "Half Diminished Seventh": "m7b5",
+        "Diminished Seventh": "dim7"
+      }
+    }
+  },
+
+  "Exercise group names": {
+    "Intervals": ["Simple Intervals"],
+    "Triads": ["Root Position", "First Inversion", "Second Inversion"],
+    "Seventh Chords": ["Dominant Seventh", "Other"]
+  },
+  "Default Settings": {
+    "Intervals default": {
+      "Simple Intervals": [
+        "Unison",
+        "Minor Second",
+        "Major Second",
+        "Minor Third",
+        "Major Third",
+        "Perfect Fourth",
+        "Tritone"
+      ]
+    },
+
+    "Triads default": {
+      "Root Position": ["Major", "Minor", "Diminished", "Augmented"]
+    },
+
+    "Seventh chords default": {
+      "Dominant Seventh": [
+        "Dominant Seventh - Root Position",
+        "Dominant Seventh - First Inversion",
+        "Dominant Seventh - Second Inversion",
+        "Dominant Seventh - Third Inversion"
+      ]
+    }
+  },
+
+  "Instruments": {
+    "Types": {
+      "Piano": ["A0", "C8"],
+      "Guitar": ["E2", "B5"],
+      "Trumpet": ["F#3", "E6"],
+      "Cello": ["C2", "A5"]
+    },
+    "Ranges": {}
+  }
+}
