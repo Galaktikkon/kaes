@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import RegisterView, GroupViewSet, UserStatsView, UserViewSet, IntervalView, ChordView, SeventhChordView, AnswearCheckView
+from .views import LoadConfigView, RegisterView, GroupViewSet, UserStatsView, UserViewSet, IntervalView, ChordView, SeventhChordView, AnswearCheckView
 from rest_framework import routers
 from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 
@@ -20,4 +20,5 @@ urlpatterns = [
     path('api/triads/', ChordView.as_view(), name='get_chord'),
     path('api/check_answear/', AnswearCheckView.as_view(), name='check_answear'),
     path('api/user_stats/', UserStatsView.as_view(), name='save_stats'),
+    path('api/load_config/', LoadConfigView.as_view(), name='load_config')
 ]
