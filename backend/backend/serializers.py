@@ -146,7 +146,9 @@ class SequenceSerializer(serializers.Serializer):
             sequence_types, Sequences.get_type_dict(group_type)
         )
 
-        pitch_relation_validator(pitch_range_low, pitch_range_high)
+        pitch_relation_validator(
+            pitch_range_low, pitch_range_high, Semitones.get_semitones()
+        )
 
         draw_range_validator(
             sequence_types,
