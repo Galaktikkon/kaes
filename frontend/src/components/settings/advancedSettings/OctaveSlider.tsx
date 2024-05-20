@@ -7,7 +7,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { Text } from "@chakra-ui/react";
-import game from "../../../state/Game";
+import game from "../../../State/Game";
 import { PIANO_KEYS } from "../../../../app/config";
 const OctaveSlider = () => {
   const [sliderValue, setSliderValue] = useState<[number, number]>([
