@@ -4,6 +4,7 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
+import { ConfigProvider } from "./configProvider";
 
 export function Providers({
   children,
@@ -14,7 +15,9 @@ export function Providers({
 }) {
   return (
     <SessionProvider session={session}>
-      <ChakraProvider>{children}</ChakraProvider>
+      <ConfigProvider>
+        <ChakraProvider>{children}</ChakraProvider>
+      </ConfigProvider>
     </SessionProvider>
   );
 }
