@@ -6,7 +6,7 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import UserSerializer, RegisterSerializer, GroupSerializer, SequenceSerializer, AnswearSerializer, UserStatisticsSerializer, UserStatsQuerySerializer
+from .serializers import UserSerializer, RegisterSerializer, GroupSerializer, SequenceSerializer, AnswearSerializer, UserStatsSerializer, UserStatsQuerySerializer
 from model.sequence_generator import SequenceGenerator
 from model.answear_tester import AnswearTester
 from backend.models import UserStatistics
@@ -70,30 +70,40 @@ class SeventhChordView(APIView):
         return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class AnswearCheckView(APIView):
-    def post(self, request, format=None):
-        serializer_class = AnswearSerializer(data=request.data)
-        if serializer_class.is_valid():
-
-            return Response(AnswearTester(serializer_class.data).test_answear(), status=status.HTTP_200_OK)
-
-        return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class UserStatisticsSave(generics.CreateAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+class AnswearCheckView(generics.CreateAPIView):
+    permission_classes = [permissions.AllowAny]
 
     def post(self, request):
 
-        data = request.data.copy()
-        data['user'] = request.user.id
+        answear_parameters_serializer_class = AnswearSerializer(
+            data=request.data
+        )
 
-        serializer_class = UserStatisticsSerializer(data=data)
-        if serializer_class.is_valid():
-            serializer_class.save()
-            return Response(request.data)
+        if answear_parameters_serializer_class.is_valid():
 
-        return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
+            result = AnswearTester(
+                answear_parameters_serializer_class.data
+            ).test_answear()
+
+            if request.user.is_authenticated:
+                data = request.data.copy()
+                data["user"] = request.user.id
+                data["result"] = result["result"]
+                del data["pitch_sequence"]
+                del data["answear_to_check"]
+
+                user_stats_serializer_class = UserStatsSerializer(data=data)
+                if user_stats_serializer_class.is_valid():
+                    user_stats_serializer_class.save()
+                else:
+                    Response(
+                        user_stats_serializer_class.errors,
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+
+            return Response(result)
+
+        return Response(answear_parameters_serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserStatsView(APIView):
@@ -131,7 +141,7 @@ class UserStatsView(APIView):
                 queryset, query_params_serializer_class.validated_data
             )
 
-            user_stats_serializer_class = UserStatisticsSerializer(
+            user_stats_serializer_class = UserStatsSerializer(
                 queryset,
                 many=True
             )
