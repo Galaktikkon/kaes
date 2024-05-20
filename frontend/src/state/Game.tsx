@@ -1,8 +1,8 @@
 "use client";
 
-import { SEQUENCE_TYPES } from "@/app/config";
 import { makeAutoObservable, runInAction } from "mobx";
-import { sequenceRequest } from "../services/game";
+import { sequenceRequest } from "../Services/game";
+import { useConfigContext } from "@/app/configProvider";
 
 type GameSettings = {
   exercise: {
@@ -52,7 +52,9 @@ class Game {
       )) {
         for (const type of this.settings.exercise.sequenceTypes[groupName]) {
           selectedSymbols.push(
-            SEQUENCE_TYPES[this.settings.exercise.name][groupName][type]
+            this.config["Exercise Types"][this.settings.exercise.name][
+              groupName
+            ][type]
           );
         }
       }
@@ -64,7 +66,7 @@ class Game {
         pitch_range_low: this.settings.playSettings.octaveRange[0],
         pitch_range_high: this.settings.playSettings.octaveRange[1],
         sequence_types: this.settings.getSelectedSymbols(),
-        type: this.settings.exercise.name.toLowerCase().replace(" ", "_"),
+        group_type: this.settings.exercise.name.toLowerCase().replace(" ", "_"),
       };
     },
 
@@ -127,6 +129,8 @@ class Game {
     },
   };
 
+  _config: ConfigData | null = null;
+
   currentQuestion: string[] = [];
 
   setCurrentQuestion(newQuestion: string[]) {
@@ -137,6 +141,14 @@ class Game {
 
   setIsActive(value: boolean) {
     this.isActive = value;
+  }
+
+  get config() {
+    return this._config as ConfigData;
+  }
+
+  addConfig(config: ConfigData) {
+    this._config = config;
   }
 
   private constructor() {
