@@ -15,7 +15,7 @@ import { observer } from "mobx-react";
 
 const CurrentStatsGroup = observer(() => {
   return (
-    <StatGroup padding={10} height={"200px"}>
+    <StatGroup height={"100px"}>
       <Stat padding={5}>
         <StatLabel>Correct</StatLabel>
         <StatNumber>{game.currentStats.correct}</StatNumber>
