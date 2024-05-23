@@ -113,35 +113,31 @@ class UserStatsView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def filter_data(self, queryset, query_params):
-        start_date = query_params.get('start_date')
-        end_date = query_params.get('end_date')
-        exercise_type = query_params.get('exercise_type')
-        instrument = query_params.get('instrument')
-        note_duration = query_params.get('note_duration')
+        start_date = query_params.get("start_date")
+        end_date = query_params.get("end_date")
+        query_param = query_params.get("query_param")
 
         if start_date and end_date:
             queryset = queryset.filter(date__range=[start_date, end_date])
-        if exercise_type:
-            queryset = queryset.filter(exercise_type=exercise_type)
-        if instrument:
-            queryset = queryset.filter(instrument=instrument)
-        if note_duration:
-            queryset = queryset.filter(note_duration=note_duration)
+        if query_param:
+            queryset = queryset.filter(exercise_type=query_param)
 
-        return queryset.order_by('date')
+        return queryset.order_by("date")
 
     def get(self, request):
-
         query_params_serializer_class = UserStatsQuerySerializer(
             data=request.query_params
         )
 
         if query_params_serializer_class.is_valid():
             user = request.user
+
             queryset = UserStatistics.objects.filter(user=user)
 
+            query_parameters = query_params_serializer_class.validated_data
+
             queryset = self.filter_data(
-                queryset, query_params_serializer_class.validated_data
+                queryset, query_parameters
             )
 
             user_stats_serializer_class = UserStatsSerializer(
@@ -149,7 +145,24 @@ class UserStatsView(APIView):
                 many=True
             )
 
-            return Response({"data": RechartsDataTransformer.get_transformed_data(user_stats_serializer_class.data)})
+            data = user_stats_serializer_class.data
+
+            query_param = query_params_serializer_class.validated_data.get(  # type: ignore
+                "query_param"
+            )
+
+            if query_param:
+                top, transformed_data = RechartsDataTransformer.get_transformed_param_data(
+                    data, query_param
+                )
+
+                return Response({"top": top, "data": transformed_data})
+
+            else:
+                transformed_data = RechartsDataTransformer.get_transformed_all_data(
+                    data
+                )
+                return Response({"data": transformed_data})
 
         return Response(query_params_serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -177,7 +190,8 @@ class LoadConfigView(APIView):
                 pitch_range_high = instruments[instrument][1]
 
                 scale = Semitones.generate_scale(
-                    pitch_range_low, pitch_range_high)
+                    pitch_range_low, pitch_range_high
+                )
 
                 data["Instruments"]["Ranges"][instrument] = scale
 

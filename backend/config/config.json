@@ -90,5 +90,44 @@
       "Cello": ["C2", "A5"]
     },
     "Ranges": {}
+  },
+  "Stats query params": {
+    "all": {},
+    "intervals": {
+      "U": "Unison",
+      "m2": "Minor Second",
+      "M2": "Major Second",
+      "m3": "Minor Third",
+      "M3": "Major Third",
+      "P4": "Perfect Fourth",
+      "TT": "Tritone",
+      "P5": "Perfect Fifth",
+      "m6": "Minor Sixth",
+      "M6": "Major Sixth",
+      "m7": "Minor Seventh",
+      "M7": "Major Seventh",
+      "P8": "Octave"
+    },
+    "triads": {
+      "major": "Major - Root Position",
+      "minor": "Minor - Root Position",
+      "diminished": "Diminished - Root Position",
+      "augmented": "Augmented",
+      "major_6": "Major - First Inversion",
+      "minor_6": "Minor - First Inversion",
+      "diminished_6": "Diminished - First Inversion",
+      "major_46": "Major - Second Inversion",
+      "minor_46": "Minor - Second Inversion",
+      "diminished_46": "Diminished - Second Inversion"
+    },
+    "seventh_chords": {
+      "D7": "Dominant Seventh - Root Position",
+      "D7_3": "Dominant Seventh - First Inversion",
+      "D7_5": "Dominant Seventh - Second Inversion",
+      "D7_7": "Dominant Seventh - Third Inversion",
+      "min7": "Minor Seventh",
+      "m7b5": "Half Diminished Seventh",
+      "dim7": "Diminished Seventh"
+    }
   }
 }

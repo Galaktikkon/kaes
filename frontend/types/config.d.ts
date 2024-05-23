@@ -29,9 +29,18 @@ interface Instruments {
   Ranges: InstrumentRanges;
 }
 
+interface StatsQueryParams {
+  [param: string]: {
+    [type: string]: {
+      [translatedType: string]: string;
+    };
+  };
+}
+
 interface ConfigData {
   "Exercise Types": ExerciseTypes;
   "Exercise group names": ExerciseGroupNames;
   "Default Settings": DefaultSettings;
   Instruments: Instruments;
+  "Stats query params": StatsQueryParams;
 }

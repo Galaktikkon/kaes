@@ -1,6 +1,7 @@
 from rest_framework.serializers import ValidationError
 from django.contrib.auth.models import User
 
+from .get_config_data import get_config_data
 from model.utils.semitones import Semitones
 
 
@@ -89,6 +90,15 @@ def user_id_validator(user_id):
 
         raise ValidationError(
             f'User of id={user_id} does not exist!'
+        )
+
+
+def query_param_validator(query_param):
+    config = get_config_data()
+    available_query_params = config["Stats query params"].keys()
+    if query_param not in available_query_params:
+        raise ValidationError(
+            "Invalid query parameter! Avaiable query parametrs: ", available_query_params
         )
 
 

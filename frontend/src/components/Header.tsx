@@ -46,7 +46,7 @@ export default function Header() {
                   <Center>
                     {session.data?.expires ? (
                       <VStack>
-                        <p>{session.data?.expires}</p>
+                        <p>{session.data?.user.name}</p>
                         <Button onClick={() => signOut()}>Sign out</Button>
                       </VStack>
                     ) : (

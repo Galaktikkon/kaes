@@ -6,7 +6,7 @@ from model.utils.sequences import Sequences
 from model.utils.semitones import Semitones
 from backend.models import UserStatistics
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .validators import date_range_validator, draw_range_validator, note_duration_validator, pitch_relation_validator, pitch_sequence_validator, pitch_validator, type_validator, sequence_types_validator, user_id_validator
+from .utils.validators import date_range_validator, draw_range_validator, query_param_validator, note_duration_validator, pitch_relation_validator, pitch_sequence_validator, pitch_validator, type_validator, sequence_types_validator, user_id_validator
 
 
 class UserNameTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -40,7 +40,7 @@ class AnswearParametersSerializerMixin(serializers.Serializer):
             Sequences.get_available_group_types())
         ]
     )
-
+    # TODO
     group_type = serializers.CharField(
         required=True,
     )
@@ -50,6 +50,7 @@ class AnswearParametersSerializerMixin(serializers.Serializer):
         validators=[note_duration_validator]
     )
 
+    # TODO
     instrument = serializers.CharField(
         required=True,
     )
@@ -218,17 +219,8 @@ class AnswearSerializer(AnswearParametersSerializerMixin, serializers.Serializer
 class UserStatsQuerySerializer(serializers.Serializer):
     start_date = serializers.DateField(required=False)
     end_date = serializers.DateField(required=False)
-    exercise_type = serializers.CharField(
-        required=False,
-        validators=[lambda group_type: type_validator(
-            group_type,
-            Sequences.get_available_group_types()
-        )]
-    )
-    instrument = serializers.CharField(required=False)
-    note_duration = serializers.FloatField(
-        required=False,
-        validators=[note_duration_validator]
+    query_param = serializers.CharField(
+        required=False, validators=[query_param_validator]
     )
 
     def validate(self, attrs):

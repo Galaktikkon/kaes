@@ -83,7 +83,7 @@ const fetchAnswear = async ({
       }),
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer" + token == undefined ? "" : " " + token,
+        ...(token === undefined ? {} : { Authorization: "Bearer " + token }),
       },
     }
   );

@@ -5,17 +5,17 @@ from model.utils.semitones import Semitones
 class AnswearTester:
 
     def __init__(self, data):
-        self.exercise_type = data["exercise_type"]
-        self.pitch_sequence = data["pitch_sequence"]
-        self.answear_to_check = data["answear_to_check"]
+        self.__exercise_type = data["exercise_type"]
+        self.__pitch_sequence = data["pitch_sequence"]
+        self.__answear_to_check = data["answear_to_check"]
         self.__types = Sequences.get_type_dict(
-            self.exercise_type
+            self.__exercise_type
         )
 
     def test_answear(self):
-        user_sequence = self.__types[self.answear_to_check]
+        user_sequence = self.__types[self.__answear_to_check]
         correct_sequence = self.__get_sequence_from_pitches(
-            self.pitch_sequence
+            self.__pitch_sequence
         )
 
         correct_answear = self.__types.inverse[tuple(correct_sequence)]

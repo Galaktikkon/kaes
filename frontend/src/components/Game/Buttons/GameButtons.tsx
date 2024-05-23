@@ -2,10 +2,10 @@
 
 import { Button, Flex, HStack, Spacer, Grid, useToast } from "@chakra-ui/react";
 import { observer } from "mobx-react";
-import game from "../State/Game";
-import ExerciseSettingsDrawer from "./settings/ExerciseSettingsDrawer";
+import game from "../../../State/Game";
+import ExerciseSettingsDrawer from "../../settings/ExerciseSettingsDrawer";
 import { Fragment } from "react";
-import { fetchAnswear, getNewQuestion } from "../Services/game";
+import { fetchAnswear, getNewQuestion } from "../../../Services/game";
 import { useConfigContext } from "@/app/configProvider";
 import { group } from "console";
 import { useSession } from "next-auth/react";
